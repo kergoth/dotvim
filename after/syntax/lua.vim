@@ -1,2 +1,2 @@
-syn cluster luaCommentGroup add=vimModeline
 syn cluster luaCommentGroup add=foldMarker
+syn cluster luaCommentGroup add=vimModeline
