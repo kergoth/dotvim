@@ -2,12 +2,9 @@ set nocompatible
 filetype off
 
 " Path to user vim runtimepath
-if !exists('$XDG_CONFIG_HOME')
-  let $XDG_CONFIG_HOME = expand('~/.config')
-endif
-let $VIMDOTDIR = $XDG_CONFIG_HOME . '/vim'
+let $MYVIMRC = expand('<sfile>:p')
+let $VIMDOTDIR = expand('<sfile>:p:h')
 let &runtimepath .= "," . $VIMDOTDIR
-let $MYVIMRC = split(globpath(&rtp, 'vimrc'), '\n')[0]
 
 " System temporary files
 if !exists('$TEMP')
@@ -30,6 +27,7 @@ set noswapfile
 
 " I always run on journaled filesystems
 set nofsync
+set swapsync=
 
 " Don't store all the backup files in cwd
 let &backupdir = $VIMDOTDIR . '/tmp,/var/tmp,' . $TEMP
@@ -200,6 +198,10 @@ if &term == 'rxvt-unicode'
   set t_Co=256
 endif
 
+"syntax enable
+"set background=dark
+" let g:solarized_termcolors=256
+"colorscheme solarized
 " Use the vim version of monokai
 colorscheme molokai
 " }}}
@@ -451,8 +453,7 @@ augroup vimrc_filetypes
   au!
   " File type specific indentation settings
   au FileType vim set sts=2 sw=2
-  au FileType go set ts=4 sw=4 sts=0 noet
-  au FileType c,cpp set ts=4 sw=4 sts=0 noet
+  au FileType c,cpp,go,taskpaper set ts=4 sw=4 sts=0 noet
   au FileType gitconfig set sts=0 sw=8 ts=8 noet
 
   " Comment string
@@ -511,9 +512,24 @@ let g:bb_create_on_empty = 0
 let g:Powerline_symbols = "unicode"
 let g:Powerline_stl_path_style = "short"
 let g:syntastic_auto_loc_list = 1
+" let g:EasyMotion_leader_key = '<Leader>'
+
+nmap <leader>G :GundoToggle<CR>
 
 let g:Modeliner_format = 'fenc= sts= sw= ts= et'
 nmap <leader>m :Modeliner<CR>
+
+" Prompt for a command to run
+map <LocalLeader>vp :VimuxPromptCommand<CR>
+
+" If text is selected, save it in the v buffer and send that buffer it to tmux
+vmap <LocalLeader>vs "vy :call VimuxRunCommand(@v . "\n", 0)<CR>
+
+" Select current paragraph and send it to tmux
+nmap <LocalLeader>vs vip<LocalLeader>vs<CR>
+
+" Close vimux panes
+map <LocalLeader>vc :VimuxClosePanes<CR>
 " }}}
 
 " Load a site specific vimrc if one exists (useful for things like font sizes)
