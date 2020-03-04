@@ -1,0 +1,21 @@
+#!/bin/bash
+
+cd "$(dirname "$0")/.." || exit 1
+
+XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+mkdir -p "$XDG_DATA_HOME/{vim,nvim}{,/backup,/swap,/undo}"
+
+XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+
+for i in "$XDG_CONFIG_HOME/vim" "$XDG_CONFIG_HOME/nvim" ~/.vimrc; do
+    if [ -h "$i" ]; then
+        rm -f "$i"
+    elif [ -e "$i" ]; then
+        echo >&2 "Error: $i already exists, abort"
+        exit 1
+    fi
+done
+
+ln -sv "$PWD" "$XDG_CONFIG_HOME/vim"
+ln -sv "$PWD" "$XDG_CONFIG_HOME/nvim"
+ln -sv "$PWD/vimrc.redir" ~/.vimrc
