@@ -1211,6 +1211,10 @@ if !has('nvim')
   endif
 endif
 
+if has('nvim') || v:version >= 800
+  packadd! cfilter
+endif
+
 " Disable built-in plugins
 let g:loaded_2html_plugin = 1
 let g:loaded_getscript = 1
