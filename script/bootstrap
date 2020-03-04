@@ -19,3 +19,7 @@ done
 ln -sv "$PWD" "$XDG_CONFIG_HOME/vim"
 ln -sv "$PWD" "$XDG_CONFIG_HOME/nvim"
 ln -sv "$PWD/vimrc.redir" ~/.vimrc
+if ! [ -d pack/bundle/opt/minpac ]; then
+    git clone --depth 1 https://github.com/k-takata/minpac pack/bundle/opt/minpac
+fi
+vim -u vimrc -c PackUpdate -c quit
