@@ -229,7 +229,6 @@ if exists('*minpac#init')
   call minpac#add('tpope/vim-repeat')
   call minpac#add('tpope/vim-rsi')
   call minpac#add('tpope/vim-surround')
-  call minpac#add('tpope/vim-unimpaired')
   call minpac#add('tweekmonster/braceless.vim')
   call minpac#add('wellle/targets.vim')
 
@@ -240,9 +239,10 @@ if exists('*minpac#init')
   call minpac#add('tmux-plugins/vim-tmux-focus-events')
   call minpac#add('vim-scripts/Modeliner')
 
+  call minpac#add('tpope/vim-unimpaired')
   " call minpac#add('markonm/traces.vim')
-  call minpac#add('tpope/vim-sensible')
-  call minpac#add('vim-jp/syntax-vim-ex')
+  " call minpac#add('tpope/vim-sensible')
+  " call minpac#add('vim-jp/syntax-vim-ex')
 endif
 
 command! PackUpdate packadd minpac | source $MYVIMRC | call minpac#update('', {'do': 'call minpac#status()'})
