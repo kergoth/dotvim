@@ -779,7 +779,7 @@ endfunction
 nnoremap <silent> <leader>H :call ToggleConceal()<cr>
 
 " Close loclist/quickfix/help
-nnoremap <silent> <leader>C :lclose \| cclose \| helpclose<cr>
+nnoremap <silent> <leader>C :lclose \| cclose \| helpclose \| pclose<cr>
 
 " Delete this buffer
 nnoremap <silent> <leader>D :bd<cr>
