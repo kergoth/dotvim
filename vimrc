@@ -812,21 +812,6 @@ augroup vimrc_mapping
   autocmd CmdWinEnter * nnoremap <silent><buffer> <leader>C <C-c><C-c>
 augroup END
 
-" Plugin Key Mapping {{{
-" Bind <leader>f to fixing/formatting with ALE
-nmap <leader>f <Plug>(ale_fix)
-
-" Fzf binds
-let g:fzf_command_prefix = 'FZF'
-nnoremap <silent> <c-b> :FZFBuffers<cr>
-nnoremap <silent> <c-p> :FZFFiles<cr>
-
-nmap <leader>u :UndotreeToggle<CR>
-nmap <leader>m :Modeliner<CR>
-
-" surround.vim
-nmap ysw ysiW
-" }}}
 " Paired Key Mapping {{{
 " Core functionality from https://github.com/tpope/vim-unimpaired
 " Written by Tim Pope <http://tpo.pe/>
@@ -1110,9 +1095,6 @@ augroup vimrc_filetypes
   au FileType c,cpp,go set ts=4 sw=4 sts=0 noet
   au FileType gitconfig set sts=0 sw=8 ts=8 noet
 
-  " Matchit
-  au FileType make let b:match_words='\<ifndef\>\|\<ifdef\>\|\<ifeq\>\|\<ifneq\>:\<else\>:\<endif\>'
-
   " Comment string
   au FileType fish set cms=#%s
   au FileType gitconfig set cms=#%s
@@ -1129,24 +1111,6 @@ augroup vimrc_filetypes
         \   set fdm=indent |
         \ endif
 
-  " Use Braceless for indent-sensitive types
-  au FileType python BracelessEnable +indent +fold
-  au FileType yaml BracelessEnable +indent +fold
-
-  " BraceLess Functions - create folds for the functions
-  autocmd FileType python nnoremap <buffer> <silent> <leader>bld :%g/\<def\>/norm zc<cr>
-  " BraceLess Classes - create folds for the classes
-  autocmd FileType python nnoremap <buffer> <silent> <leader>blc :%g/\<class\>/norm zc<cr>
-  " BraceLess All - switch to the slow fold method to create them all
-  autocmd FileType python nnoremap <buffer> <silent> <leader>bla :BracelessEnable +fold-slow<cr>
-
-  " Adjust the space mapping to trigger Braceless' fold creation
-  autocmd FileType python nmap <buffer> <silent> <expr> <Space> foldlevel('.') ? "za" : "zc"
-  autocmd FileType yaml nmap <buffer> <silent> <expr> <Space> foldlevel('.') ? "za" : "zc"
-
-  " Set up completion
-  au FileType vim let b:vcm_tab_complete = 'vim'
-
   " Default to syntax completion if we have nothing better
   au FileType *
         \ if &omnifunc == "" |
@@ -1154,9 +1118,6 @@ augroup vimrc_filetypes
         \ else |
         \   let b:vcm_tab_complete = 'omni' |
         \ endif
-
-  " Run gofmt on save
-  au FileType go let b:ale_fix_on_save = 1
 
   " Diff context begins with a space, so blank lines of context
   " are being inadvertantly flagged as redundant whitespace.
@@ -1200,7 +1161,7 @@ let g:xml_syntax_folding = 1
 " Disable new bitbake file template
 let g:bb_create_on_empty = 0
 " }}}
-" Plugin configuration {{{
+" Plugins {{{
 if !has('nvim')
   if v:version >= 800
     packadd! matchit
@@ -1212,6 +1173,18 @@ endif
 if has('nvim') || v:version >= 800
   packadd! cfilter
 endif
+
+" Settings that need to be set before loading the plugin
+let g:fzf_command_prefix = 'FZF'
+let g:sneak#label = 1
+let g:sneak#s_next = 1
+let g:sneak#use_ic_scs = 1
+let g:vcm_default_maps = 0
+let g:endwise_no_mappings = 1
+
+" Mappings if the FZF plugin isn't available yet
+nnoremap <C-b> :b <C-d>
+nnoremap <C-p> :e **/
 
 " Disable built-in plugins
 let g:loaded_2html_plugin = 1
@@ -1233,89 +1206,6 @@ let g:loaded_vimball = 1
 let g:loaded_vimballPlugin = 1
 let g:loaded_zip = 1
 let g:loaded_zipPlugin = 1
-
-let g:sneak#label = 1
-let g:sneak#use_ic_scs = 1
-let g:sleuth_automatic = 1
-let g:editorconfig_blacklist = {'filetype': ['git.*', 'fugitive']}
-
-let g:undotree_SetFocusWhenToggle = 1
-let g:undotree_WindowLayout = 2
-let g:Modeliner_format = 'sts= sw= et fdm'
-
-if exists('$SSH_CONNECTION')
-  let g:vitality_always_assume_iterm = 1
-endif
-
-" Error and warning signs
-let g:ale_sign_error = '⤫'
-let g:ale_sign_warning = '⚠'
-
-let g:ale_linters = {
-\   'python': ['flake8', 'mypy'],
-\   'sh': ['shellcheck'],
-\}
-
-let g:ale_fixers = {
-\   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\   'vim': ['remove_trailing_lines'],
-\   'python': ['isort', 'autopep8'],
-\   'sh': ['shfmt'],
-\   'go': ['gofmt'],
-\   'elixir': ['mix_format'],
-\}
-
-let g:ale_sh_shfmt_options = '-ci -bn -i 4'
-
-" Apathy
-let g:python_executable = 'python3'
-" Snippets {{{
-" Replace the default ycm maps with neosnippet-aware ones
-let g:vcm_default_maps = 0
-" Replace the default endwise map with a neosnippet-aware one
-let g:endwise_no_mappings = '1'
-
-" Next completion, expand snippet, or open the completion menu
-imap <expr><Tab>
-      \ pumvisible() ?
-      \   "\<Plug>vim_completes_me_forward" :
-      \   neosnippet#expandable_or_jumpable() ?
-      \     "\<Plug>(neosnippet_expand_or_jump)" :
-      \     "\<Plug>vim_completes_me_forward"
-
-" Next snippet placeholder
-smap <expr><Tab>
-      \ neosnippet#expandable_or_jumpable() ?
-      \   "\<Plug>(neosnippet_expand_or_jump)" :
-      \   "\<Tab>"
-
-imap <expr><C-l>
-      \ neosnippet#expandable_or_jumpable() ?
-      \ "\<Plug>(neosnippet_expand_or_jump)" : "\<C-n>"
-
-" Previous completion
-imap <S-Tab> <Plug>vim_completes_me_backward
-
-" Explicit snippet expansion
-imap <c-k> <Plug>(neosnippet_expand_or_jump)
-smap <c-k> <Plug>(neosnippet_expand_or_jump)
-xmap <c-k> <Plug>(neosnippet_expand_target)
-
-" Expand the completed snippet or accept the selected completion with <cr>
-" Adjusted to support endwise
-imap <expr><cr>
-      \ pumvisible() ?
-      \   neosnippet#expandable() ?
-      \     "\<Plug>(neosnippet_expand)" :
-      \     "\<c-y>" :
-      \   "\<cr>\<Plug>DiscretionaryEnd"
-
-" Delete snippet markers when leaving insert mode
-augroup neosnippet
-  autocmd!
-  autocmd InsertLeave * NeoSnippetClearMarkers
-augroup END
-" }}}
 " }}}
 " Finale {{{
 " Load a site specific vimrc if one exists (useful for things like font sizes)
