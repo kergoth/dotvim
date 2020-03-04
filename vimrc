@@ -1,4 +1,3 @@
-" vint: +ProhibitImplicitScopeVariable +ProhibitUnusedVariable +ProhibitAbbreviationOption
 " Begin {{{
 if &compatible
   " This needs to be done explicitly when using `vim -u`
