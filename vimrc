@@ -698,7 +698,7 @@ nmap <leader>s :%s//g<LEFT><LEFT>
 nmap <leader>S :%s/\<<C-r><C-w>\>//<Left>
 
 " Grep
-nmap <leader>g :Grep
+nmap <leader>g :Grep<space>
 
 " Grep for the word under the cursor
 nmap <leader>G :Grep <C-r><C-w>
