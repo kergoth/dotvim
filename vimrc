@@ -400,17 +400,6 @@ augroup vimrc
   endfunction
   au FileType qf call AdjustWindowHeight(3, 10)
 
-  " Close out the quickfix window if it's the only open window
-  function! s:QuickFixClose()
-    if &buftype ==# 'quickfix'
-      " if this window is last on screen, quit
-      if winnr('$') < 2
-        quit
-      endif
-    endif
-  endfunction
-  au BufEnter * call <SID>QuickFixClose()
-
   " Close preview window when the completion menu closes
   autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
