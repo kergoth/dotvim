@@ -1186,10 +1186,10 @@ let g:vcm_default_maps = 0
 let g:endwise_no_mappings = 1
 
 " Mappings if the FZF plugin isn't available yet
-if maparg('<C-b>', 'n') == ''
+if maparg('<C-b>', 'n') ==# ''
   nnoremap <C-b> :b <C-d>
 endif
-if maparg('<C-p>', 'n') == ''
+if maparg('<C-p>', 'n') ==# ''
   nnoremap <C-p> :e **/
 endif
 
