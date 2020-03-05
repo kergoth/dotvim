@@ -22,4 +22,8 @@ ln -sv "$PWD/vimrc.redir" ~/.vimrc
 if ! [ -d pack/bundle/opt/minpac ]; then
     git clone --depth 1 https://github.com/k-takata/minpac pack/bundle/opt/minpac
 fi
-vim -u vimrc -c PackClean -c PackUpdate -c quit
+
+if command -v nvim >/dev/null 2>&1; then
+    alias vim=nvim
+fi
+vim -E -u vimrc -c PackClean -c PackUpdateAndQuit | cat
