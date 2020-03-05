@@ -396,7 +396,7 @@ if has('linebreak')
   set cpoptions+=n
 end
 
-if has('unix')
+if &shell =~# 'fish'
   " Vim makes assumptions about shell behavior, so don't rely on $SHELL
   set shell=sh
 elseif has('win32')
