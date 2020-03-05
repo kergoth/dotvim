@@ -1098,13 +1098,10 @@ augroup vimrc_filetypes
 
   " File type specific indentation settings
   au FileType vim set sts=2 sw=2 et
-  au FileType c,cpp,go set ts=4 sw=4 sts=0 noet
-  au FileType gitconfig set sts=0 sw=8 ts=8 noet
+  au FileType gitconfig set sts=0 sw=8 noet
 
   " Comment string
-  au FileType fish set cms=#%s
   au FileType gitconfig set cms=#%s
-  au FileType cfg set cms=#%s
 
   " Set up folding
   au FileType c,cpp,lua,vim,sh,go,gitcommit set fdm=syntax
