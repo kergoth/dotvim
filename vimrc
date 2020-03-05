@@ -697,6 +697,12 @@ nmap <leader>s :%s//g<LEFT><LEFT>
 " Global search & replace the word under the cursor
 nmap <leader>S :%s/\<<C-r><C-w>\>//<Left>
 
+" Grep
+nmap <leader>g :Grep
+
+" Grep for the word under the cursor
+nmap <leader>G :Grep <C-r><C-w>
+
 " Open a file in the same directory as the current file
 map <leader>e :e <c-r>=escape(expand('%:p:h'), ' \') . '/' <cr>
 
