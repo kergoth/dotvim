@@ -979,6 +979,7 @@ function! s:SetColorScheme()
   elseif findfile('colors/dracula.vim', &runtimepath) !=# ''
     colorscheme dracula
   endif
+  exe 'doautocmd ColorScheme ' . g:colors_name
 endfunction
 
 augroup vimrc_colorscheme
