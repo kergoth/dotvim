@@ -1132,10 +1132,10 @@ augroup vimrc_filetypes
   au Filetype rst nnoremap <buffer> <localleader>2 yypVr-
   au Filetype rst nnoremap <buffer> <localleader>3 yypVr~
   au Filetype rst nnoremap <buffer> <localleader>4 yypVr`
-  au Filetype markdown nnoremap <buffer> <localleader>1 I# 
-  au Filetype markdown nnoremap <buffer> <localleader>2 I## 
-  au Filetype markdown nnoremap <buffer> <localleader>3 I### 
-  au Filetype markdown nnoremap <buffer> <localleader>4 I#### 
+  au Filetype markdown nnoremap <buffer> <localleader>1 I#<space>
+  au Filetype markdown nnoremap <buffer> <localleader>2 I##<space>
+  au Filetype markdown nnoremap <buffer> <localleader>3 I###<space>
+  au Filetype markdown nnoremap <buffer> <localleader>4 I####<space>
 
   " Don't restore position in a git commit message
   au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
