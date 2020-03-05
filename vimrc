@@ -232,7 +232,6 @@ if exists('*minpac#init')
 
   call minpac#add('roxma/nvim-yarp')
   call minpac#add('roxma/vim-hug-neovim-rpc')
-  call minpac#add('Shougo/neosnippet-snippets')
   call minpac#add('Shougo/neosnippet.vim')
   call minpac#add('vim-scripts/Modeliner')
 
