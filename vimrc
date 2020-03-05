@@ -877,9 +877,9 @@ set noshowmode
 set statusline=
 set statusline+=%2*%(\ %{&paste?'PASTE':''}\ %)%*
 set statusline+=%3*
-set statusline+=%(\ %{statusline#Filename_Modified()}\ %)
+set statusline+=%(\ %{vimrc#statusline#Filename_Modified()}\ %)
 set statusline+=%*
-set statusline+=%(%{statusline#Readonly()}\ %)
+set statusline+=%(%{vimrc#statusline#Readonly()}\ %)
 
 set statusline+=%=
 
@@ -900,8 +900,8 @@ augroup END
 
 " Align titlestring with statusline
 if has('gui_running') || &title
-  set titlestring=%(%{&bt!=#''?&bt:statusline#Filename_Modified()}\ %)
-  set titlestring+=%{statusline#Readonly()}
+  set titlestring=%(%{&bt!=#''?&bt:vimrc#statusline#Filename_Modified()}\ %)
+  set titlestring+=%{vimrc#statusline#Readonly()}
 endif
 
 " Setup color scheme
@@ -928,7 +928,7 @@ endfunction
 augroup vimrc_colorscheme
   autocmd!
   autocmd ColorScheme * :call s:OverrideColors()
-  autocmd ColorScheme dracula call statusline#set_colors(s:statusline_dracula_colors)
+  autocmd ColorScheme dracula call vimrc#statusline#set_colors(s:statusline_dracula_colors)
 
   if v:vim_did_enter
     call s:SetColorScheme()

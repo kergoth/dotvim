@@ -1,4 +1,4 @@
-function! statusline#get_highlight_line(group)
+function! vimrc#statusline#get_highlight_line(group)
   " Redirect the output of the "hi" command into a variable
   " and find the highlighting
   redir => GroupDetails
@@ -20,8 +20,8 @@ function! statusline#get_highlight_line(group)
   return ExistingHighlight
 endfunction
 
-function! statusline#highlight_args(group) abort
-  let output = statusline#get_highlight_line(a:group)
+function! vimrc#statusline#highlight_args(group) abort
+  let output = vimrc#statusline#get_highlight_line(a:group)
   let hidict = {}
   for item in split(output, '\s\+')
     if match(item, '=') > 0
@@ -32,7 +32,7 @@ function! statusline#highlight_args(group) abort
   return hidict
 endfunction
 
-function! statusline#highlight_args_string(hidict) abort
+function! vimrc#statusline#highlight_args_string(hidict) abort
   let entries = []
   for item in items(a:hidict)
     let entries += [join(item, '=')]
@@ -40,7 +40,7 @@ function! statusline#highlight_args_string(hidict) abort
   return join(entries)
 endfunction
 
-function! statusline#copy_dict_items(from, to, terms) abort
+function! vimrc#statusline#copy_dict_items(from, to, terms) abort
   for term in a:terms
     if has_key(a:from, term)
       let a:to[term] = a:from[term]
@@ -55,25 +55,25 @@ endfunction
 "       \ 'User2': {'Number': {'override': 'gui=reverse cterm=reverse guibg=black ctermbg=black'}},
 "       \ 'User3': {'StatusLine': {'copy': 'ctermfg guifg'}, 'Identifier': {'copy': 'ctermfg guifg'}},
 "       \ }
-function! statusline#set_colors(colors) abort
+function! vimrc#statusline#set_colors(colors) abort
   for [group, rules] in items(a:colors)
     let result = []
     for [fromgroup, fromrules] in items(rules)
       let override = get(fromrules, 'override', '')
       if override !=# ''
-        let failed = add(result, statusline#get_highlight_line(fromgroup))
+        let failed = add(result, vimrc#statusline#get_highlight_line(fromgroup))
         let failed = add(result, override)
       endif
 
       let copyitems = get(fromrules, 'copy', '')
       if copyitems !=# ''
-        let higroup = statusline#highlight_args(fromgroup)
+        let higroup = vimrc#statusline#highlight_args(fromgroup)
         if copyitems ==# 'all'
           let hidict = higroup
         else
-          let hidict = statusline#copy_dict_items(higroup, {}, split(copyitems))
+          let hidict = vimrc#statusline#copy_dict_items(higroup, {}, split(copyitems))
         endif
-        let failed = add(result, statusline#highlight_args_string(hidict))
+        let failed = add(result, vimrc#statusline#highlight_args_string(hidict))
       endif
     endfor
     exe 'hi ' . group . ' ' . join(result, ' ')
@@ -81,16 +81,16 @@ function! statusline#set_colors(colors) abort
 endfunction
 
 if exists('*pathshorten')
-  function! statusline#pathshorten(path)
+  function! vimrc#statusline#pathshorten(path)
     return pathshorten(fnamemodify(a:path, ':~:.'))
   endfunction
 else
-  function! statusline#pathshorten(path)
+  function! vimrc#statusline#pathshorten(path)
     return fnamemodify(a:path, ':t')
   endfunction
 endif
 
-function! statusline#Filename_Modified()
+function! vimrc#statusline#Filename_Modified()
   " Avoid the component separator between filename and modified indicator
   let filename = expand('%')
   let basename = fnamemodify(filename, ':t')
@@ -104,14 +104,14 @@ function! statusline#Filename_Modified()
   if basename ==# ''
     " Shorten without the trailing / for directories
     let pathsep = has('win32') ? '\' : '/'
-    let filename = statusline#pathshorten(fnamemodify(filename, ':h')) . pathsep
+    let filename = vimrc#statusline#pathshorten(fnamemodify(filename, ':h')) . pathsep
   else
-    let filename = statusline#pathshorten(filename)
+    let filename = vimrc#statusline#pathshorten(filename)
   endif
   let modified = &modified ? '+' : ''
   return filename . modified
 endfunction
 
-function! statusline#Readonly()
+function! vimrc#statusline#Readonly()
   return &readonly && &filetype !=# 'help' ? 'RO' : ''
 endfunction
