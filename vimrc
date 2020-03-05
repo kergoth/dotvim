@@ -234,11 +234,6 @@ if exists('*minpac#init')
   call minpac#add('roxma/vim-hug-neovim-rpc')
   call minpac#add('Shougo/neosnippet.vim')
   call minpac#add('vim-scripts/Modeliner')
-
-  call minpac#add('tpope/vim-unimpaired')
-  " call minpac#add('markonm/traces.vim')
-  " call minpac#add('tpope/vim-sensible')
-  " call minpac#add('vim-jp/syntax-vim-ex')
 endif
 
 command! PackUpdate packadd minpac | source $MYVIMRC | call minpac#update('', {'do': 'call minpac#status()'})
