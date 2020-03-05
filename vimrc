@@ -952,9 +952,6 @@ augroup vimrc_statusline
   au!
   " Remove the position info from the quickfix statusline
   au BufWinEnter quickfix if exists('g:statusline_quickfix') | let &l:statusline = g:statusline_quickfix | endif
-
-  " Set User colors based on the color scheme
-  au ColorScheme * call statusline#set_statusline_colors()
 augroup END
 
 " Align titlestring with statusline
@@ -965,6 +962,11 @@ endif
 
 " Setup color scheme
 let g:dracula_italic = 0
+let s:statusline_dracula_colors = {
+      \ 'User1': {'Comment': {'override': 'gui=reverse cterm=reverse guibg=white ctermbg=white'}},
+      \ 'User2': {'Number': {'override': 'gui=reverse cterm=reverse guibg=black ctermbg=black'}},
+      \ 'User3': {'StatusLine': {'copy': 'ctermfg guifg'}, 'Identifier': {'copy': 'ctermfg guifg'}},
+      \ }
 
 function! s:OverrideColors() abort
   hi! link Error NONE
@@ -982,6 +984,7 @@ endfunction
 augroup vimrc_colorscheme
   autocmd!
   autocmd ColorScheme * :call s:OverrideColors()
+  autocmd ColorScheme dracula call statusline#set_colors(s:statusline_dracula_colors)
 
   if v:vim_did_enter
     call s:SetColorScheme()

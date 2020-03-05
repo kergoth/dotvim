@@ -40,26 +40,44 @@ function! statusline#highlight_args_string(hidict) abort
   return join(entries)
 endfunction
 
-function! statusline#copy_dict_items(from, to, ...) abort
-  for term in a:000
+function! statusline#copy_dict_items(from, to, terms) abort
+  for term in a:terms
     if has_key(a:from, term)
       let a:to[term] = a:from[term]
     endif
   endfor
+  return a:to
 endfunction
 
-function! statusline#set_statusline_colors() abort
-  " Use Comment and Number fg as bg, with legible text
-  exe 'hi User1 ' . statusline#get_highlight_line('Comment') . ' gui=reverse cterm=reverse guibg=white ctermbg=white'
-  exe 'hi User2 ' . statusline#get_highlight_line('Number') . ' gui=reverse cterm=reverse guibg=black ctermbg=black'
+" Example:
+" let s:statusline_dracula_colors = {
+"       \ 'User1': {'Comment': {'override': 'gui=reverse cterm=reverse guibg=white ctermbg=white'}},
+"       \ 'User2': {'Number': {'override': 'gui=reverse cterm=reverse guibg=black ctermbg=black'}},
+"       \ 'User3': {'StatusLine': {'copy': 'ctermfg guifg'}, 'Identifier': {'copy': 'ctermfg guifg'}},
+"       \ }
+function! statusline#set_colors(colors) abort
+  for [group, rules] in items(a:colors)
+    let result = []
+    for [fromgroup, fromrules] in items(rules)
+      let override = get(fromrules, 'override', '')
+      if override !=# ''
+        let failed = add(result, statusline#get_highlight_line(fromgroup))
+        let failed = add(result, override)
+      endif
 
-  " Use Identifier's fg on Statusline's bg
-  let user3 = {}
-  let identifier = statusline#highlight_args('Identifier')
-  let statusline = statusline#highlight_args('StatusLine')
-  call statusline#copy_dict_items(statusline, user3, 'ctermbg', 'guibg')
-  call statusline#copy_dict_items(identifier, user3, 'ctermfg', 'guifg')
-  exe 'hi User3 ' . statusline#highlight_args_string(user3)
+      let copyitems = get(fromrules, 'copy', '')
+      if copyitems !=# ''
+        let higroup = statusline#highlight_args(fromgroup)
+        if copyitems ==# 'all'
+          let hidict = higroup
+        else
+          let hidict = statusline#copy_dict_items(higroup, {}, split(copyitems))
+        endif
+        let failed = add(result, statusline#highlight_args_string(hidict))
+      endif
+    endfor
+    exe 'hi ' . group . ' ' . join(result, ' ')
+  endfor
 endfunction
 
 if exists('*pathshorten')
