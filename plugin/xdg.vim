@@ -31,6 +31,7 @@ if !has('nvim')
   if has('persistent_undo')
     set undodir+=$XDG_DATA_HOME/vim/undo
   endif
+  let g:netrw_home = $XDG_DATA_HOME . '/vim'
+else
+  let g:netrw_home = $XDG_DATA_HOME . '/nvim'
 endif
-
-let g:netrw_home = $XDG_DATA_HOME . '/vim'
