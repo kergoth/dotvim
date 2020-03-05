@@ -39,5 +39,4 @@ function! vimrc#minpac#packages()
   call minpac#add('roxma/nvim-yarp')
   call minpac#add('roxma/vim-hug-neovim-rpc')
   call minpac#add('Shougo/neosnippet.vim')
-  call minpac#add('vim-scripts/Modeliner')
 endfunction
