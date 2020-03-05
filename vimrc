@@ -1189,8 +1189,12 @@ let g:vcm_default_maps = 0
 let g:endwise_no_mappings = 1
 
 " Mappings if the FZF plugin isn't available yet
-nnoremap <C-b> :b <C-d>
-nnoremap <C-p> :e **/
+if maparg('<C-b>', 'n') == ''
+  nnoremap <C-b> :b <C-d>
+endif
+if maparg('<C-p>', 'n') == ''
+  nnoremap <C-p> :e **/
+endif
 
 " Disable built-in plugins
 let g:loaded_2html_plugin = 1
