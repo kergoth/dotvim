@@ -1,4 +1,11 @@
-" vint: -ProhibitUnnecessaryDoubleQuote -ProhibitSetNoCompatible
+" vint: +ProhibitImplicitScopeVariable +ProhibitUnusedVariable +ProhibitAbbreviationOption
+" Begin {{{
+if &compatible
+  " This needs to be done explicitly when using `vim -u`
+  " vint: -ProhibitSetNoCompatible
+  set nocompatible
+endif
+" }}}
 " Defaults {{{
 if v:version >= 800 && !has("nvim")
   unlet! skip_defaults_vim
@@ -146,32 +153,20 @@ endif
 " }}}
 " Filesystem paths {{{
 let $MYVIMRC = expand('<sfile>:p')
-let $VIMDOTDIR = expand('<sfile>:p:h')
-let $DOTFILESDIR = expand('<sfile>:p:h:h')
+let $VIMDOTDIR = fnamemodify($MYVIMRC, ':h')
+
+" Load files from here, not elsewhere
 set runtimepath^=$VIMDOTDIR runtimepath+=$VIMDOTDIR/after
-
-" Also include $DOTFILESDIR/*/vim/
-let g:dtvim = glob($DOTFILESDIR . '/*/vim/', 0, 1)
-let &runtimepath = $VIMDOTDIR . ',' . join(g:dtvim, ',') . ',' . &runtimepath . ',' . join(g:dtvim, '/after,') . '/after'
-
-" Use XDG paths
-if !has('nvim')
-  if empty($XDG_DATA_HOME)
-    let $XDG_DATA_HOME = $HOME . '/.local/share'
-  endif
-
-  if has('viminfo') && empty($VIMINFO)
-    let $VIMINFO = $XDG_DATA_HOME . '/vim/viminfo'
-  endif
-
-  set directory=$XDG_DATA_HOME/vim/swap//
-  set backupdir=$XDG_DATA_HOME/vim/backup
-  if has('persistent_undo')
-    set undodir=$XDG_DATA_HOME/vim/undo
-  endif
+if has('nvim')
+  set runtimepath-=~/.config/nvim runtimepath-=~/.config/nvim/after
 else
-  set backupdir-=.
+  set runtimepath-=~/.vim runtimepath-=~/.vim/after
 endif
+let &packpath = &runtimepath
+
+" Do not write these next to the file
+set backupdir-=.
+set undodir-=.
 
 " Double slash does not actually work for backupdir, here's a fix
 augroup vimrc_backupdir
@@ -199,8 +194,60 @@ if has('multi_byte')
   scriptencoding utf-8
 endif
 " }}}
-" Bundle setup {{{
-call pathogen#infect()
+" Package setup {{{
+if exists('*minpac#init')
+  call minpac#init({'package_name': 'bundle'})
+  call minpac#add('k-takata/minpac', {'type': 'opt'})
+
+  call minpac#add('ajh17/VimCompletesMe')
+  call minpac#add('christoomey/vim-tmux-navigator')
+  call minpac#add('ConradIrwin/vim-bracketed-paste')
+  call minpac#add('dense-analysis/ale')
+  call minpac#add('dhruvasagar/vim-zoom')
+  call minpac#add('dracula/vim', {'name': 'dracula'})
+  call minpac#add('junegunn/fzf')
+  call minpac#add('junegunn/fzf.vim')
+  call minpac#add('justinmk/vim-dirvish')
+  call minpac#add('justinmk/vim-sneak')
+  call minpac#add('kergoth/vim-bitbake')
+  call minpac#add('kergoth/vim-sh-indent', {'branch': 'indent-pipe-while'})
+  call minpac#add('machakann/vim-highlightedyank')
+  call minpac#add('mbbill/undotree')
+  call minpac#add('romainl/vim-qlist')
+  call minpac#add('sgur/vim-editorconfig')
+  call minpac#add('sheerun/vim-polyglot')
+  call minpac#add('sjl/vitality.vim')
+  call minpac#add('tommcdo/vim-lion')
+  call minpac#add('tpope/vim-abolish')
+  call minpac#add('tpope/vim-apathy')
+  call minpac#add('tpope/vim-commentary')
+  call minpac#add('tpope/vim-dispatch')
+  call minpac#add('tpope/vim-endwise')
+  call minpac#add('tpope/vim-eunuch')
+  call minpac#add('tpope/vim-fugitive')
+  call minpac#add('tpope/vim-obsession')
+  call minpac#add('tpope/vim-repeat')
+  call minpac#add('tpope/vim-rsi')
+  call minpac#add('tpope/vim-surround')
+  call minpac#add('tpope/vim-unimpaired')
+  call minpac#add('tweekmonster/braceless.vim')
+  call minpac#add('wellle/targets.vim')
+
+  call minpac#add('roxma/nvim-yarp')
+  call minpac#add('roxma/vim-hug-neovim-rpc')
+  call minpac#add('Shougo/neosnippet-snippets')
+  call minpac#add('Shougo/neosnippet.vim')
+  call minpac#add('tmux-plugins/vim-tmux-focus-events')
+  call minpac#add('vim-scripts/Modeliner')
+
+  " call minpac#add('markonm/traces.vim')
+  call minpac#add('tpope/vim-sensible')
+  call minpac#add('vim-jp/syntax-vim-ex')
+endif
+
+command! PackUpdate packadd minpac | source $MYVIMRC | call minpac#update('', {'do': 'call minpac#status()'})
+command! PackClean  packadd minpac | source $MYVIMRC | call minpac#clean()
+command! PackStatus packadd minpac | source $MYVIMRC | call minpac#status()
 " }}}
 " General settings {{{
 " Enable backup files
@@ -373,33 +420,6 @@ endif
 set splitbelow
 set splitright
 
-if &term ==# 'rxvt-unicode'
-  set t_Co=256
-endif
-
-function! OverrideColors() abort
-  hi! link Error NONE
-  hi! Error ctermbg=darkred guibg=darkred ctermfg=black guifg=black
-endfunction
-
-set background=dark
-if &t_Co < 88 && (! has('gui_running'))
-  colorscheme desert
-else
-  try
-    let g:dracula_italic = 0
-    colorscheme dracula
-  catch
-    colorscheme baycomb
-  endtry
-  call OverrideColors()
-endif
-
-augroup colorscheme_override
-  au!
-  au ColorScheme * call OverrideColors()
-augroup END
-
 augroup vimrc
   au!
 
@@ -432,7 +452,7 @@ augroup vimrc
       let n_lines += float2nr(ceil(line_width))
       let l += 1
     endw
-    exe max([min([n_lines, a:maxheight]), a:minheight]) . "wincmd _"
+    exe max([min([n_lines, a:maxheight]), a:minheight]) . 'wincmd _'
   endfunction
   au FileType qf call AdjustWindowHeight(3, 10)
 
@@ -706,11 +726,11 @@ function! ToggleList(bufname, pfx)
   endfor
   if a:pfx ==# 'l' && len(getloclist(0)) == 0
     echohl ErrorMsg
-    echo a:bufname . " is Empty."
+    echo a:bufname . ' is Empty.'
     return
   elseif a:pfx ==# 'c' && len(getqflist()) == 0
     echohl ErrorMsg
-    echo a:bufname . " is Empty."
+    echo a:bufname . ' is Empty.'
     return
   endif
   let winnr = winnr()
@@ -946,13 +966,38 @@ augroup vimrc_statusline
   au ColorScheme * call statusline#set_statusline_colors()
 augroup END
 
-call statusline#set_statusline_colors()
-
 " Align titlestring with statusline
 if has('gui_running') || &title
   set titlestring=%(%{&bt!=#''?&bt:statusline#Filename_Modified()}\ %)
   set titlestring+=%{statusline#Readonly()}
 endif
+
+" Setup color scheme
+let g:dracula_italic = 0
+
+function! s:OverrideColors() abort
+  hi! link Error NONE
+  hi! Error ctermbg=darkred guibg=darkred ctermfg=black guifg=black
+endfunction
+
+function! s:SetColorScheme()
+  if &t_Co < 88 && (! has('gui_running'))
+    colorscheme desert
+  elseif findfile('colors/dracula.vim', &runtimepath) !=# ''
+    colorscheme dracula
+  endif
+endfunction
+
+augroup vimrc_colorscheme
+  autocmd!
+  autocmd ColorScheme * :call s:OverrideColors()
+
+  if v:vim_did_enter
+    call s:SetColorScheme()
+  else
+    autocmd VimEnter * nested :call s:SetColorScheme()
+  endif
+augroup END
 
 " Assume we have a decent terminal, as vim only recognizes a very small set of
 " $TERM values for the default enable.
@@ -977,7 +1022,7 @@ function! FoldText()
   redir End
   let l:lpadding += l:signs =~# 'id=' ? 2 : 0
 
-  if exists("+relativenumber")
+  if exists('+relativenumber')
     if (&number)
       let l:lpadding += max([&numberwidth, strlen(line('$'))]) + 1
     elseif (&relativenumber)
@@ -1001,7 +1046,7 @@ function! FoldText()
   let l:start = strpart(l:start , 0, l:width - l:separatorlen)
   let l:text = l:start . ' … '
 
-  return l:text . repeat(' ', l:width - strlen(substitute(l:text, ".", "x", "g"))) . l:info
+  return l:text . repeat(' ', l:width - strlen(substitute(l:text, '.', 'x', 'g'))) . l:info
 endfunction
 set foldtext=FoldText()
 " }}}
@@ -1161,7 +1206,7 @@ let g:xml_syntax_folding = 1
 let g:bb_create_on_empty = 0
 " }}}
 " Plugin configuration {{{
-if !has("nvim")
+if !has('nvim')
   if v:version >= 800
     packadd! matchit
   else
@@ -1274,12 +1319,6 @@ augroup END
 " }}}
 " }}}
 " Finale {{{
-" Load topic-specific vim settings from dotfiles, shortcut method rather than
-" creating some_topic/vim/plugin/some_topic.vim
-for f in glob('$DOTFILESDIR/*/topic.vim', 0, 1)
-    exe 'source ' . f
-endfor
-
 " Load a site specific vimrc if one exists (useful for things like font sizes)
 if !exists('$HOSTNAME')
   let $HOSTNAME = hostname()
