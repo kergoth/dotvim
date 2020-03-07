@@ -621,9 +621,6 @@ nnoremap <silent> <leader>U :nohlsearch<cr>:diffupdate<cr>:syntax sync fromstart
 " Ensure arrows always work correctly with command-T
 map <Esc>[B <Down>
 
-" Paste and re-indent
-nnoremap <leader>p p`[v`]=
-
 " Select the just-pasted text
 nnoremap <expr> <leader><leader>` '`[' . strpart(getregtype(), 0, 1) . '`]'
 
