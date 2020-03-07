@@ -606,12 +606,6 @@ if &term =~# '^screen'
   execute "set <xLeft>=\e[1;*D"
 endif
 
-" Toggle display of invisible characters
-nnoremap <leader>i :set list!<cr>
-
-" Toggle display of line numbers
-nnoremap <leader>n :set number!<cr>
-
 " Toggle paste mode with ,P
 set pastetoggle=<leader>P
 
@@ -626,9 +620,6 @@ nnoremap <expr> <leader><leader>` '`[' . strpart(getregtype(), 0, 1) . '`]'
 
 " Operate on the just changed/pasted text
 onoremap <silent> <expr> ` ':<C-u>norm! `[' . strpart(getregtype(), 0, 1) . '`]<cr>'
-
-" Toggle spell checking
-map <leader>ss :set spell!<cr>
 
 " Global search & replace
 nmap <leader>s :%s//g<LEFT><LEFT>
@@ -757,9 +748,28 @@ augroup vimrc_mapping
   autocmd CmdWinEnter * nnoremap <silent><buffer> <leader>C <C-c><C-c>
 augroup END
 
-" Paired Key Mapping {{{
-" Core functionality from https://github.com/tpope/vim-unimpaired
+" Unimpaired Mappings {{{
+" Functionality from https://github.com/tpope/vim-unimpaired
 " Written by Tim Pope <http://tpo.pe/>
+
+" Toggle display of line numbers
+nnoremap =on :setlocal number!<CR>
+
+" Toggle relative line numbers
+nnoremap =or :setlocal relativenumber!<CR>
+
+" Toggle display of invisible characters
+nnoremap =ol :setlocal list!<CR>
+
+" Toggle spell checking
+nnoremap =os :setlocal spell!<CR>
+
+" co as well as =o for convenience
+if empty(maparg('co', 'n'))
+   nmap co =o
+ endif
+
+" Paired Key Mapping
 function! s:MapNextFamily(map, cmd)
   let map = '<Plug>unimpaired'.toupper(a:map)
   let end = ' ".(v:count ? v:count : "")<CR>'
