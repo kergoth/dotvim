@@ -279,8 +279,8 @@ set wildignore+=*.pyc,*.pyo                      " Python byte code
 set ignorecase
 set smartcase
 
-" Don't highlight my searches
-set nohlsearch
+" Highlight my searches
+set hlsearch
 
 " Try to match case when using insert mode completion
 set infercase
