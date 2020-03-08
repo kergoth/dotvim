@@ -35,7 +35,7 @@ function! VerifyUndo ()
     let undo_now = undotree().seq_cur
 
     " If so, check whether to undo into pre-history...
-    if undo_now > 0 && undo_now == b:undo_start
+    if exists('b:undo_start') && undo_now > 0 && undo_now == b:undo_start
         return confirm('',"Undo into previous session? (&Yes\n&No)",1) == 1 ? "\<C-L>u" : "\<C-L>"
 
     " Otherwise, always undo...
