@@ -1127,6 +1127,7 @@ let g:sneak#s_next = 1
 let g:sneak#use_ic_scs = 1
 let g:vcm_default_maps = 0
 let g:endwise_no_mappings = 1
+let g:dispatch_no_maps = 1
 
 " Mappings if the FZF plugin isn't available yet
 if maparg('<C-b>', 'n') ==# ''
