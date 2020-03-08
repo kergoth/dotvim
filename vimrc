@@ -291,11 +291,6 @@ set sidescroll=1
 " Show columns of context when scrolling horizontally
 set sidescrolloff=5
 
-if has('nvim')
-  " Enable live substitution
-  set inccommand=nosplit
-endif
-
 " Enable modelines
 set modeline
 
