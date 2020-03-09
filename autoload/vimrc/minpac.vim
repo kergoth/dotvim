@@ -36,6 +36,6 @@ function! vimrc#minpac#packages()
   call minpac#add('tpope/vim-repeat')
   call minpac#add('tpope/vim-rsi')
   call minpac#add('tpope/vim-surround')
-  call minpac#add('tweekmonster/braceless.vim')
+  call minpac#add('tweekmonster/braceless.vim', {'type': 'opt'})
   call minpac#add('wellle/targets.vim')
 endfunction

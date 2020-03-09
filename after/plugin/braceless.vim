@@ -1,12 +1,7 @@
-if !exists('g:loaded_braceless')
-  finish
-endif
-
-augroup after_plugin_braceless
+augroup plugin_braceless
   autocmd!
 
-  autocmd FileType python BracelessEnable +indent +fold
-  autocmd FileType yaml BracelessEnable +indent +fold
+  autocmd FileType python,yaml packadd braceless.vim | BracelessEnable +indent +fold
 
   " BraceLess Functions - create folds for the functions
   autocmd User BracelessEnabled_python nnoremap <buffer> <silent> ,bld :%g/\<def\>/norm zc<cr>
