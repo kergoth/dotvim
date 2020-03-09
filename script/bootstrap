@@ -3,7 +3,7 @@
 cd "$(dirname "$0")/.." || exit 1
 
 XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
-mkdir -p "$XDG_DATA_HOME/{vim,nvim}{,/backup,/swap,/undo}"
+mkdir -p "$XDG_DATA_HOME"/{vim,nvim}{,/backup,/undo} "$XDG_DATA_HOME/nvim/shada"
 
 if ! [ -d pack/bundle/opt/minpac ]; then
     git clone --depth 1 https://github.com/k-takata/minpac pack/bundle/opt/minpac
