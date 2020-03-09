@@ -854,9 +854,6 @@ if has('gui_running')
   " dialogs for simple choices
   set guioptions+=c
 
-  " Use a line-drawing char for pretty vertical splits.
-  set fillchars+=vert:│
-
   augroup gvimrc
     au!
     au GUIEnter * set columns=96 lines=48
