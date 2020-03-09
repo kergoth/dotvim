@@ -1,10 +1,4 @@
-" Begin {{{
-if &compatible
-  " This needs to be done explicitly when using `vim -u`
-  " vint: -ProhibitSetNoCompatible
-  set nocompatible
-endif
-" }}}
+" vint: -ProhibitSetNoCompatible
 " Defaults {{{
 if v:version >= 800 && !has("nvim")
   unlet! skip_defaults_vim
