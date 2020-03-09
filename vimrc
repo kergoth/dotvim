@@ -800,7 +800,7 @@ endif
 function! FoldText()
   let l:lpadding = &foldcolumn
   redir => l:signs
-  execute 'silent sign place buffer='.bufnr('%')
+  execute 'silent sign place group=* buffer='.bufnr('%')
   redir End
   let l:lpadding += l:signs =~# 'id=' ? 2 : 0
 
