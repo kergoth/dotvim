@@ -16,12 +16,16 @@ if !has('nvim')
   " Remove default tempdir paths in favor of the XDG paths
   let s:save_backupdir = &backupdir
   let s:save_directory = &directory
-  set backupdir& directory&
+  let s:save_viewdir = &viewdir
+  set backupdir& directory& viewdir&
   if &backupdir ==# s:save_backupdir
     set backupdir=.
   endif
   if &directory ==# s:save_directory
     set directory=.
+  endif
+  if &viewdir ==# s:save_viewdir
+    set viewdir=$XDG_DATA_HOME/vim/view
   endif
   let &backupdir = s:save_backupdir
   let &directory = s:save_directory
@@ -31,7 +35,6 @@ if !has('nvim')
   if has('persistent_undo')
     set undodir+=$XDG_DATA_HOME/vim/undo
   endif
-  set viewdir=$XDG_DATA_HOME/vim/view
 
   let g:netrw_home = $XDG_DATA_HOME . '/vim'
 else
