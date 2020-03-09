@@ -1,0 +1,17 @@
+#!/bin/sh
+
+"$(dirname "$0")"/bootstrap
+
+XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+
+for i in "$XDG_CONFIG_HOME/vim" "$XDG_CONFIG_HOME/nvim" ~/.vimrc; do
+    if [ -e "$i" ] && ! [ -h "$i" ]; then
+        echo >&2 "Error: $i already exists, abort"
+        exit 1
+    fi
+done
+
+rm -f "$XDG_CONFIG_HOME/vim" "$XDG_CONFIG_HOME/nvim" ~/.vimrc
+ln -sv "$PWD" "$XDG_CONFIG_HOME/vim"
+ln -sv "$PWD" "$XDG_CONFIG_HOME/nvim"
+ln -sv "$PWD/vimrc.redir" ~/.vimrc

@@ -5,20 +5,6 @@ cd "$(dirname "$0")/.." || exit 1
 XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 mkdir -p "$XDG_DATA_HOME/{vim,nvim}{,/backup,/swap,/undo}"
 
-XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
-
-for i in "$XDG_CONFIG_HOME/vim" "$XDG_CONFIG_HOME/nvim" ~/.vimrc; do
-    if [ -e "$i" ] && ! [ -h "$i" ]; then
-        echo >&2 "Error: $i already exists, abort"
-        exit 1
-    fi
-done
-
-rm -f "$XDG_CONFIG_HOME/vim" "$XDG_CONFIG_HOME/nvim" ~/.vimrc
-ln -sv "$PWD" "$XDG_CONFIG_HOME/vim"
-ln -sv "$PWD" "$XDG_CONFIG_HOME/nvim"
-ln -sv "$PWD/vimrc.redir" ~/.vimrc
-
 if ! [ -d pack/bundle/opt/minpac ]; then
     git clone --depth 1 https://github.com/k-takata/minpac pack/bundle/opt/minpac
 fi
