@@ -31,6 +31,8 @@ To instead make this default, run:
 
 ### From plugins
 
+imap <C-x><C-t> Complete minisnip snippets.
+
 ## Reference Links
 
 - [Vim: available lowercase key pairs in normal mode](https://gist.github.com/romainl/1f93db9dc976ba851bbb)
