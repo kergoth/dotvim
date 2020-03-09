@@ -530,13 +530,9 @@ iabbrev adn and
 iabbrev teh the
 " }}}
 " Key Mapping {{{
-" , is much more convenient than \, as it's closer to the home row
-let mapleader = ','
-let maplocalleader = mapleader
-
 " Fix command typos
 nmap ; :
-nnoremap <leader>; ;
+nnoremap ,; ;
 
 " :help is the best interface, not F1
 nnoremap <F1> <nop>
@@ -581,7 +577,7 @@ noremap <C-\>  <C-w>p
 nnoremap <silent> <C-S-\> :TmuxNavigatePrevious<cr>
 
 " Switch between the last two files
-nnoremap <leader><leader> <c-^>
+nnoremap ,, <c-^>
 
 " Use < and >, not << and >>, and don't lose visual selection while indenting
 nnoremap < <<
@@ -602,34 +598,34 @@ if &term =~# '^screen'
 endif
 
 " Toggle paste mode with ,P
-set pastetoggle=<leader>P
+set pastetoggle=,P
 
 " Clear search, refresh diff, sync syntax, redraw the screen
-nnoremap <silent> <leader>U :nohlsearch<cr>:diffupdate<cr>:syntax sync fromstart<cr>:redraw!<cr>
+nnoremap <silent> ,U :nohlsearch<cr>:diffupdate<cr>:syntax sync fromstart<cr>:redraw!<cr>
 
 " Ensure arrows always work correctly with command-T
 map <Esc>[B <Down>
 
 " Select the just-pasted text
-nnoremap <expr> <leader><leader>` '`[' . strpart(getregtype(), 0, 1) . '`]'
+nnoremap <expr> ,,` '`[' . strpart(getregtype(), 0, 1) . '`]'
 
 " Operate on the just changed/pasted text
 onoremap <silent> <expr> ` ':<C-u>norm! `[' . strpart(getregtype(), 0, 1) . '`]<cr>'
 
 " Global search & replace
-nmap <leader>s :%s//g<LEFT><LEFT>
+nmap ,s :%s//g<LEFT><LEFT>
 
 " Global search & replace the word under the cursor
-nmap <leader>S :%s/\<<C-r><C-w>\>//<Left>
+nmap ,S :%s/\<<C-r><C-w>\>//<Left>
 
 " Grep
-nmap <leader>g :Grep<space>
+nmap ,g :Grep<space>
 
 " Grep for the word under the cursor
-nmap <leader>G :Grep <C-r><C-w>
+nmap ,G :Grep <C-r><C-w>
 
 " Open a file in the same directory as the current file
-map <leader>e :e <C-r>=escape(expand('%:p:h'), ' \') . '/<C-d>' <cr>
+map ,e :e <C-r>=escape(expand('%:p:h'), ' \') . '/<C-d>' <cr>
 
 function! GetBufferList()
   redir =>buflist
@@ -663,14 +659,14 @@ function! ToggleList(bufname, pfx)
 endfunction
 
 " Toggle loclist and quickfix windows
-nmap <silent> <leader>l :call ToggleList("Location List", 'l')<CR>
-nmap <silent> <leader>c :call ToggleList("Quickfix List", 'c')<CR>
+nmap <silent> ,l :call ToggleList("Location List", 'l')<CR>
+nmap <silent> ,c :call ToggleList("Quickfix List", 'c')<CR>
 
 " Open a Quickfix window for the last search.
-nnoremap <silent> <leader>/ :execute 'vimgrep /'.@/.'/g %'<CR>:copen<CR>
+nnoremap <silent> ,/ :execute 'vimgrep /'.@/.'/g %'<CR>:copen<CR>
 
 " Show highlight groups under the cursor
-nmap <silent> <leader>hl   :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+nmap <silent> ,hl   :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 " Delete trailing whitespace
 function! StripTrailingWhitespace()
@@ -682,13 +678,13 @@ function! StripTrailingWhitespace()
     normal! `z
   endif
 endfunction
-nnoremap <leader>dtw :call StripTrailingWhitespace()<CR>
+nnoremap ,dtw :call StripTrailingWhitespace()<CR>
 
 " Edit the vimrc
-nmap <silent> <leader>v :e $MYVIMRC<CR>
+nmap <silent> ,v :e $MYVIMRC<CR>
 
 " Replace file contents with the selection
-vnoremap <leader>F "qy<CR>:<C-U>exe "normal! ggdG\"qP"<CR>
+vnoremap ,F "qy<CR>:<C-U>exe "normal! ggdG\"qP"<CR>
 
 " Toggle conceal (i.e. hiding)
 function! ToggleConceal() abort
@@ -698,13 +694,13 @@ function! ToggleConceal() abort
     set conceallevel=0
   endif
 endfunction
-nnoremap <silent> <leader>H :call ToggleConceal()<cr>
+nnoremap <silent> ,H :call ToggleConceal()<cr>
 
 " Close loclist/quickfix/help
-nnoremap <silent> <leader>C :lclose \| cclose \| helpclose \| pclose<cr>
+nnoremap <silent> ,C :lclose \| cclose \| helpclose \| pclose<cr>
 
 " Delete this buffer
-nnoremap <silent> <leader>D :bd<cr>
+nnoremap <silent> ,D :bd<cr>
 
 " Easier getting out of terminal mode
 try
@@ -736,11 +732,11 @@ augroup vimrc_mapping
   autocmd FileType dirvish nnoremap <silent><buffer>
         \ gh :silent keeppatterns g@\v/\.[^\/]+/?$@d _<cr>:setl cole=3<cr>
 
-  " Let <leader>C also close the dirvish window, from that window
-  autocmd FileType dirvish nnoremap <silent><buffer> <leader>C <Plug>(dirvish_quit)
+  " Let ,C also close the dirvish window, from that window
+  autocmd FileType dirvish nnoremap <silent><buffer> ,C <Plug>(dirvish_quit)
 
-  " Let <leader>C also close the command-line window
-  autocmd CmdWinEnter * nnoremap <silent><buffer> <leader>C <C-c><C-c>
+  " Let ,C also close the command-line window
+  autocmd CmdWinEnter * nnoremap <silent><buffer> ,C <C-c><C-c>
 augroup END
 
 " Unimpaired Mappings {{{

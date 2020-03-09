@@ -24,8 +24,8 @@ let g:ale_fixers = {
 
 let g:ale_sh_shfmt_options = '-ci -bn -i 4'
 
-" Bind <leader>f to fixing/formatting with ALE
-nmap <leader>f <Plug>(ale_fix)
+" Bind ,f to fixing/formatting with ALE
+nmap ,f <Plug>(ale_fix)
 
 augroup after_plugin_ale
   autocmd!
