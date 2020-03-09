@@ -7,7 +7,7 @@ else
   " The default vimrc file.
   "
   " Maintainer:	Bram Moolenaar <Bram@vim.org>
-  " Last change:	2019 Feb 18
+  " Last change:	2019 Oct 27
   "
   " This is loaded if no vimrc file was found.
   " Except when Vim is run with "-u NONE" or "-C".
@@ -50,10 +50,7 @@ else
   set ttimeoutlen=100	" wait up to 100ms after Esc for special key
 
   " Show @@@ in the last line if it is truncated.
-  try
-    set display=truncate
-  catch
-  endtry
+  set display=truncate
 
   " Show a few lines of context around the cursor.  Note that this makes the
   " text scroll if you mouse-click near the start or end of the window.
@@ -84,8 +81,14 @@ else
 
   " In many terminal emulators the mouse works just fine.  By enabling it you
   " can position the cursor, Visually select and scroll with the mouse.
+  " Only xterm can grab the mouse events when using the shift key, for other
+  " terminals use ":", select text and press Esc.
   if has('mouse')
-    set mouse=a
+    if &term =~ 'xterm'
+      set mouse=a
+    else
+      set mouse=nvi
+    endif
   endif
 
   " Switch syntax highlighting on when the terminal has colors or when using the
@@ -133,7 +136,7 @@ else
   " Revert with: ":delcommand DiffOrig".
   if !exists(":DiffOrig")
     command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
-  		  \ | wincmd p | diffthis
+                    \ | wincmd p | diffthis
   endif
 
   if has('langmap') && exists('+langremap')
