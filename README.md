@@ -13,6 +13,8 @@ git clone https://github.com/kergoth/dotvim /whereever/you/want/it
 
 ### Builtin
 
+:cq  Exit non-zero.
+
 ### .vim/vimrc
 
 ### From plugins
