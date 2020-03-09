@@ -1,5 +1,5 @@
 " Defaults {{{
-if v:version >= 800 && !has("nvim")
+if v:version >= 800 && !has('nvim')
   unlet! skip_defaults_vim
   source $VIMRUNTIME/defaults.vim
 else
@@ -530,7 +530,7 @@ function! StripTrailingWhitespace()
   if !&binary && &filetype !=# 'diff'
     normal! mz
     normal! Hmy
-    %s/\s\+$//e
+    %keeppatterns snomagic/\s\+$//e
     normal! 'yz<CR>
     normal! `z
   endif
