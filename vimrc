@@ -301,14 +301,14 @@ set completeopt=longest,menuone,preview
 if executable('rg')
   set grepprg=rg\ --smart-case\ --vimgrep\ $*
   command! -bang -nargs=* Search
-    \ call fzf#vim#grep('rg --vimgrep --smart-case --color=always ' . shellescape(<q-args>), 1, <bang>0)
+        \ call fzf#vim#grep('rg --vimgrep --smart-case --color=always ' . shellescape(<q-args>), 1, <bang>0)
 elseif executable('ag')
   set grepprg=ag\ -H\ --nocolor\ --nogroup\ --column\ $*
   command! -bang -nargs=* Search call fzf#vim#ag(<q-args>, 1, <bang>0)
 elseif executable('ack')
   set grepprg=ack\ -H\ --nocolor\ --nogroup\ --column\ $*
   command! -bang -nargs=* Search
-    \ call fzf#vim#grep('ack -H --nocolor --nogroup --column ' . shellescape(<q-args>), 1, <bang>0)
+        \ call fzf#vim#grep('ack -H --nocolor --nogroup --column ' . shellescape(<q-args>), 1, <bang>0)
 endif
 set grepformat=%f:%l:%c:%m
 
@@ -706,11 +706,11 @@ endtry
 
 " Convert a single line shell script to multiline
 function! SplitShellLine() abort
-    silent! exe '%s/ *; */\r/g'
-    silent! exe '%s/ *&& */ \\\r \&\&/g'
-    silent! exe '%s/ *|| */ \\\r ||/g'
-    silent! exe '%s/^\(do\|then\) \(.*\)/\1\r\2/g'
-    Format
+  silent! exe '%s/ *; */\r/g'
+  silent! exe '%s/ *&& */ \\\r \&\&/g'
+  silent! exe '%s/ *|| */ \\\r ||/g'
+  silent! exe '%s/^\(do\|then\) \(.*\)/\1\r\2/g'
+  Format
 endfunction
 
 augroup vimrc_mapping
@@ -751,8 +751,8 @@ nnoremap =os :setlocal spell!<CR>
 
 " co as well as =o for convenience
 if empty(maparg('co', 'n'))
-   nmap co =o
- endif
+  nmap co =o
+endif
 
 " Paired Key Mapping
 function! s:MapNextFamily(map, cmd)
