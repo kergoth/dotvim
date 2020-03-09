@@ -982,6 +982,9 @@ let g:vcm_default_maps = 0
 let g:endwise_no_mappings = 1
 let g:dispatch_no_maps = 1
 
+" Disable the minisnip default mappings
+imap <Plug>(noop) <Plug>(minisnip-complete)
+
 " Mappings if the FZF plugin isn't available yet
 if maparg('<C-b>', 'n') ==# ''
   nnoremap <C-b> :b <C-d>

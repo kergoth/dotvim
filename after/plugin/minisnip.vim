@@ -4,6 +4,9 @@ endif
 
 let g:minisnip_dir = join(globpath(&runtimepath, 'minisnip/', 0, 1), ':')
 
+imap <C-x><C-t> <Plug>(minisnip-complete)
+inoremap <expr> <C-t> pumvisible() ?  "\<C-n>" : "\<C-t>"
+
 " SuperTab like snippets behavior
 imap <expr><Tab> pumvisible() ?
       \ "\<Plug>vim_completes_me_forward" :
