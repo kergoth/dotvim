@@ -971,13 +971,10 @@ if has('nvim') || v:version >= 800
 endif
 
 " Settings that need to be set before loading the plugin
-let g:fzf_command_prefix = 'FZF'
-let g:sneak#label = 1
-let g:sneak#s_next = 1
-let g:sneak#use_ic_scs = 1
-let g:vcm_default_maps = 0
-let g:endwise_no_mappings = 1
 let g:dispatch_no_maps = 1
+let g:endwise_no_mappings = 1
+let g:fzf_command_prefix = 'FZF'
+let g:vcm_default_maps = 0
 
 " Disable the minisnip default mappings
 imap <Plug>(noop) <Plug>(minisnip-complete)
