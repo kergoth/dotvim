@@ -358,19 +358,19 @@ set cursorline
 " }}}
 " Commands {{{
 " Grep asynchronously with Dispatch
-function! s:Grep(...)
+function! s:Grep(bang, ...)
   let l:errorformat = &errorformat
   let l:makeprg = &makeprg
   let &makeprg = &grepprg
   let &errorformat = &grepformat
   try
-    execute 'Make' join(a:000, ' ')
+    execute 'Make' . a:bang . ' ' . join(a:000, ' ')
   finally
     let &errorformat = l:errorformat
     let &makeprg = l:makeprg
   endtry
 endfunction
-command! -nargs=+ Grep call s:Grep(<f-args>)
+command! -nargs=+ -bang Grep call s:Grep("<bang>", <f-args>)
 
 if !has('nvim')
   " Make the 'Man' command available, loading on demand
