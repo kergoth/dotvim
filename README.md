@@ -25,13 +25,13 @@ To instead make this default, run:
 
 ### Builtin
 
-:cq  Exit non-zero.
+`:cq`: Exit non-zero.
 
 ### .vim/vimrc
 
 ### From plugins
 
-imap <C-x><C-t> Complete minisnip snippets.
+imap `<C-x><C-t>`: Complete minisnip snippets.
 
 ## Reference Links
 
