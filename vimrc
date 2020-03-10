@@ -216,6 +216,14 @@ endif
 set splitbelow
 set splitright
 
+" Ignore changes in amount of whitespace
+set diffopt+=iwhite
+
+" Prefer the patience algorithm
+if has('patch-8.1.0360')
+  set diffopt+=internal,algorithm:patience
+endif
+
 augroup vimrc
   au!
 
