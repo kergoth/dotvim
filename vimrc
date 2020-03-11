@@ -1,12 +1,3 @@
-" Defaults {{{
-if v:version >= 800 && !has('nvim')
-  unlet! skip_defaults_vim
-  source $VIMRUNTIME/defaults.vim
-else
-  " Use version embedded in my dotvim
-  runtime embedded/defaults.vim
-endif
-" }}}
 " Filesystem paths {{{
 let $MYVIMRC = expand('<sfile>:p')
 let $VIMDOTDIR = fnamemodify($MYVIMRC, ':h')
@@ -33,6 +24,15 @@ augroup END
 " Ensure we cover all temp files for backup file creation
 if $OSTYPE =~? 'darwin'
   set backupskip+=/private/tmp/*
+endif
+" }}}
+" Defaults {{{
+if v:version >= 800 && !has('nvim')
+  unlet! skip_defaults_vim
+  source $VIMRUNTIME/defaults.vim
+else
+  " Use version embedded in my dotvim
+  runtime embedded/defaults.vim
 endif
 " }}}
 " Encoding {{{
