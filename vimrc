@@ -757,37 +757,20 @@ if has('gui_running') || &title
 endif
 
 " Setup color scheme
-let g:dracula_italic = 0
-let s:statusline_dracula_colors = {
-      \ 'User1': {'Comment': {'override': 'gui=reverse cterm=reverse guibg=white ctermbg=white'}},
-      \ 'User2': {'Number': {'override': 'gui=reverse cterm=reverse guibg=black ctermbg=black'}},
-      \ 'User3': {'StatusLine': {'copy': 'ctermfg guifg'}, 'Identifier': {'copy': 'ctermfg guifg'}},
-      \ }
-
 function! s:OverrideColors() abort
   hi! link Error NONE
   hi! Error ctermbg=darkred guibg=darkred ctermfg=black guifg=black
 endfunction
 
-function! s:SetColorScheme()
-  if &t_Co < 88 && (! has('gui_running'))
-    colorscheme desert
-  elseif findfile('colors/dracula.vim', &runtimepath) !=# ''
-    colorscheme dracula
-  endif
-endfunction
-
 augroup vimrc_colorscheme
   autocmd!
   autocmd ColorScheme * :call s:OverrideColors()
-  autocmd ColorScheme dracula call vimrc#statusline#set_colors(s:statusline_dracula_colors)
-
-  if v:vim_did_enter
-    call s:SetColorScheme()
-  else
-    autocmd VimEnter * nested :call s:SetColorScheme()
-  endif
 augroup END
+
+" Default colorscheme for fallback
+if !exists('g:colors_name')
+  colorscheme desert
+endif
 
 " Assume we have a decent terminal, as vim only recognizes a very small set of
 " $TERM values for the default enable.
