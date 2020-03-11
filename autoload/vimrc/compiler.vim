@@ -8,15 +8,12 @@ function! vimrc#compiler#lint(bang, ...) abort
       return 1
     endif
   endif
-  echomsg 'linter: ' . l:linter
   call vimrc#compiler#compilemake(a:bang, l:linter, "")
 endfunction
 
 function! vimrc#compiler#compilemake(bang, compiler, ...) abort
   let l:old_compiler = get(b:, 'current_compiler', '')
-  " echomsg 'compiler: ' . a:compiler
   exe 'compiler ' . a:compiler
-  " echomsg 'Make' . a:bang . ' ' . join(a:000, ' ')
   augroup compilemake
     au!
     autocmd QuickFixCmdPost [^l]* cclose
