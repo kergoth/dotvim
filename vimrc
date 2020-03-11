@@ -1,5 +1,5 @@
 " Filesystem paths {{{
-let $MYVIMRC = expand('<sfile>:p')
+let $MYVIMRC = expand("<sfile>:p")
 let $VIMDOTDIR = fnamemodify($MYVIMRC, ':h')
 
 " Load files from here, not elsewhere

@@ -1,0 +1,5 @@
+#!/bin/sh
+cp -a "$topdir/.git" .
+cp -a "$topdir/pack/." pack/
+git checkout -f .
+./script/bootstrap </dev/null
