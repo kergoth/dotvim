@@ -769,7 +769,11 @@ augroup END
 
 " Default colorscheme for fallback
 if !exists('g:colors_name')
-  colorscheme desert
+  if &t_Co >= 88
+    colorscheme baycomb
+  else
+    colorscheme desert
+  endif
 endif
 
 " Assume we have a decent terminal, as vim only recognizes a very small set of
