@@ -515,11 +515,11 @@ function! ToggleList(bufname, pfx)
 endfunction
 
 " Toggle loclist and quickfix windows
-nmap <silent> ,l :call ToggleList("Location List", 'l')<CR>
-nmap <silent> ,c :call ToggleList("Quickfix List", 'c')<CR>
+nmap <silent> ,wl :call ToggleList("Location List", 'l')<CR>
+nmap <silent> ,wc :call ToggleList("Quickfix List", 'c')<CR>
 
 " Open a Quickfix window for the last search.
-nnoremap <silent> ,/ :execute 'vimgrep /'.@/.'/g %'<CR>:copen<CR>
+nnoremap <silent> ,w/ :execute 'vimgrep /'.@/.'/g %'<CR>:copen<CR>
 
 " Show highlight groups under the cursor
 nmap <silent> ,hl   :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
@@ -543,7 +543,7 @@ nmap <silent> ,v :e $MYVIMRC<CR>
 vnoremap ,F "qy<CR>:<C-U>exe "normal! ggdG\"qP"<CR>
 
 " Close loclist/quickfix/help
-nnoremap <silent> ,C :lclose \| cclose \| helpclose \| pclose<cr>
+nnoremap <silent> ,wC :lclose \| cclose \| helpclose \| pclose<cr>
 
 " Delete this buffer
 nnoremap <silent> ,D :bd<cr>
@@ -579,10 +579,10 @@ augroup vimrc_mapping
         \ gh :silent keeppatterns g@\v/\.[^\/]+/?$@d _<cr>:setl cole=3<cr>
 
   " Let ,C also close the dirvish window, from that window
-  autocmd FileType dirvish nnoremap <silent><buffer> ,C <Plug>(dirvish_quit)
+  autocmd FileType dirvish nnoremap <silent><buffer> ,wC <Plug>(dirvish_quit)
 
   " Let ,C also close the command-line window
-  autocmd CmdWinEnter * nnoremap <silent><buffer> ,C <C-c><C-c>
+  autocmd CmdWinEnter * nnoremap <silent><buffer> ,wC <C-c><C-c>
 augroup END
 
 " Unimpaired Mappings {{{

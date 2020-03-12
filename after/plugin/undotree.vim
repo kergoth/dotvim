@@ -5,4 +5,4 @@ endif
 let g:undotree_SetFocusWhenToggle = 1
 let g:undotree_WindowLayout = 2
 
-nmap ,u :UndotreeToggle<CR>
+nmap ,wu :UndotreeToggle<CR>
