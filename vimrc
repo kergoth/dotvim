@@ -399,9 +399,6 @@ iabbrev teh the
 nmap ; :
 nnoremap ,; ;
 
-" :help is the best interface, not F1
-nnoremap <F1> <nop>
-
 " Make zO recursively open whatever top level fold we're in, no matter where
 " the cursor happens to be.
 nnoremap zO zCzO
