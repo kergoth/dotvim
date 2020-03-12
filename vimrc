@@ -441,9 +441,7 @@ nnoremap <silent> <C-S-\> :TmuxNavigatePrevious<cr>
 " Switch between the last two files
 nnoremap ,, <c-^>
 
-" Use < and >, not << and >>, and don't lose visual selection while indenting
-nnoremap < <<
-nnoremap > >>
+" Don't lose visual selection while indenting
 vnoremap < <gv
 vnoremap > >gv
 
