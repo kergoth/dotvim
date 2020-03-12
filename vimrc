@@ -374,8 +374,12 @@ function! s:Grep(bang, ...)
   let l:makeprg = &makeprg
   let &makeprg = &grepprg
   let &errorformat = &grepformat
+
+  let l:args = copy(a:000)
+  call map(l:args, 'shellescape(v:val)')
+
   try
-    execute 'Make' . a:bang . ' ' . join(a:000, ' ')
+    execute 'Make' . a:bang . ' ' . join(l:args, ' ')
   finally
     let &errorformat = l:errorformat
     let &makeprg = l:makeprg
