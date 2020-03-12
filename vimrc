@@ -549,7 +549,7 @@ function! StripTrailingWhitespace()
     normal! `z
   endif
 endfunction
-nnoremap ,dtw :call StripTrailingWhitespace()<CR>
+nnoremap ,W :call StripTrailingWhitespace()<CR>
 
 " Edit the vimrc
 nmap <silent> ,v :e $MYVIMRC<CR>
