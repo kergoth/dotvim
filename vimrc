@@ -426,10 +426,6 @@ xnoremap & :&&<CR>
 nnoremap ' `
 nnoremap ` '
 
-" Use space to toggle folds and create manual folds
-nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
-vnoremap <Space> zf
-
 " Easy window navigation
 noremap <C-h>  <C-w>h
 noremap <C-j>  <C-w>j
