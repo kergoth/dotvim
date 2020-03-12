@@ -478,7 +478,7 @@ nnoremap <silent> ,U :nohlsearch<cr>:diffupdate<cr>:syntax sync fromstart<cr>:re
 map <Esc>[B <Down>
 
 " Select the just-pasted text
-nnoremap <expr> ,,` '`[' . strpart(getregtype(), 0, 1) . '`]'
+nnoremap <expr> ,` '`[' . strpart(getregtype(), 0, 1) . '`]'
 
 " Operate on the just changed/pasted text
 onoremap <silent> <expr> ` ':<C-u>norm! `[' . strpart(getregtype(), 0, 1) . '`]<cr>'
