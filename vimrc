@@ -551,16 +551,6 @@ nmap <silent> ,v :e $MYVIMRC<CR>
 " Replace file contents with the selection
 vnoremap ,F "qy<CR>:<C-U>exe "normal! ggdG\"qP"<CR>
 
-" Toggle conceal (i.e. hiding)
-function! ToggleConceal() abort
-  if &conceallevel == 0
-    set conceallevel=1
-  else
-    set conceallevel=0
-  endif
-endfunction
-nnoremap <silent> ,H :call ToggleConceal()<cr>
-
 " Close loclist/quickfix/help
 nnoremap <silent> ,C :lclose \| cclose \| helpclose \| pclose<cr>
 
@@ -608,14 +598,24 @@ augroup END
 " Functionality from https://github.com/tpope/vim-unimpaired
 " Written by Tim Pope <http://tpo.pe/>
 
+" Toggle conceal
+function! ToggleConceal() abort
+  if &conceallevel == 0
+    setlocal conceallevel=1
+  else
+    setlocal conceallevel=0
+  endif
+endfunction
+nnoremap <silent> =oc :call ToggleConceal()<cr>
+
+" Toggle display of invisible characters
+nnoremap =ol :setlocal list!<CR>
+
 " Toggle display of line numbers
 nnoremap =on :setlocal number!<CR>
 
 " Toggle relative line numbers
 nnoremap =or :setlocal relativenumber!<CR>
-
-" Toggle display of invisible characters
-nnoremap =ol :setlocal list!<CR>
 
 " Toggle spell checking
 nnoremap =os :setlocal spell!<CR>
