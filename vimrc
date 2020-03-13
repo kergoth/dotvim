@@ -496,7 +496,7 @@ nmap ,g :Grep<space>
 nmap ,G :Grep <C-r><C-w>
 
 " Open a file in the same directory as the current file
-map ,e :e <C-r>=escape(expand('%:p:h'), ' \') . '/<C-d>' <cr>
+nnoremap ,e :e <C-r>=escape(expand('%:p:h'), ' \') . '/<C-d>'<CR>
 
 function! GetBufferList()
   redir =>buflist
