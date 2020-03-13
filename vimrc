@@ -474,9 +474,6 @@ set pastetoggle=,P
 " Clear search, refresh diff, sync syntax, redraw the screen
 nnoremap <silent> ,U :nohlsearch<cr>:diffupdate<cr>:syntax sync fromstart<cr>:redraw!<cr>
 
-" Ensure arrows always work correctly with command-T
-map <Esc>[B <Down>
-
 " Select the just-pasted text
 nnoremap <expr> ,` '`[' . strpart(getregtype(), 0, 1) . '`]'
 
@@ -484,16 +481,16 @@ nnoremap <expr> ,` '`[' . strpart(getregtype(), 0, 1) . '`]'
 onoremap <silent> <expr> ` ':<C-u>norm! `[' . strpart(getregtype(), 0, 1) . '`]<cr>'
 
 " Global search & replace
-nmap ,s :%s//g<LEFT><LEFT>
+nnoremap ,s :%s//g<LEFT><LEFT>
 
 " Global search & replace the word under the cursor
-nmap ,S :%s/\<<C-r><C-w>\>//<Left>
+nnoremap ,S :%s/\<<C-r><C-w>\>//<Left>
 
 " Grep
-nmap ,g :Grep<space>
+nnoremap ,g :Grep<space>
 
 " Grep for the word under the cursor
-nmap ,G :Grep <C-r><C-w>
+nnoremap ,G :Grep <C-r><C-w>
 
 " Open a file in the same directory as the current file
 nnoremap ,e :e <C-r>=escape(expand('%:p:h'), ' \') . '/<C-d>'<CR>
@@ -530,14 +527,14 @@ function! ToggleList(bufname, pfx)
 endfunction
 
 " Toggle loclist and quickfix windows
-nmap <silent> ,wl :call ToggleList("Location List", 'l')<CR>
-nmap <silent> ,wc :call ToggleList("Quickfix List", 'c')<CR>
+nnoremap <silent> ,wl :call ToggleList("Location List", 'l')<CR>
+nnoremap <silent> ,wc :call ToggleList("Quickfix List", 'c')<CR>
 
 " Open a Quickfix window for the last search.
 nnoremap <silent> ,w/ :execute 'vimgrep /'.@/.'/g %'<CR>:copen<CR>
 
 " Show highlight groups under the cursor
-nmap <silent> ,hl   :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+nnoremap <silent> ,hl   :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 " Delete trailing whitespace
 function! StripTrailingWhitespace()
@@ -552,7 +549,7 @@ endfunction
 nnoremap ,W :call StripTrailingWhitespace()<CR>
 
 " Edit the vimrc
-nmap <silent> ,v :e $MYVIMRC<CR>
+nnoremap <silent> ,v :e $MYVIMRC<CR>
 
 " Replace file contents with the selection
 vnoremap ,F "qy<CR>:<C-U>exe "normal! ggdG\"qP"<CR>
