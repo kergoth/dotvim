@@ -686,6 +686,10 @@ if &term =~# '^screen'
   set notitle
 endif
 
+" Prefer a wider current window
+set winwidth=72
+set winminwidth=30
+
 if has('gui_running')
   set guicursor=a:block,a:blinkon0
 
