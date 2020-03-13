@@ -544,7 +544,7 @@ function! StripTrailingWhitespace()
   if !&binary && &filetype !=# 'diff'
     normal! mz
     normal! Hmy
-    %keeppatterns snomagic/\s\+$//e
+    keeppatterns %snomagic/\s\+$//e
     normal! 'yz<CR>
     normal! `z
   endif
