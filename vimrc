@@ -830,6 +830,11 @@ function! FoldText()
   return l:text . repeat(' ', l:width - strlen(substitute(l:text, '.', 'x', 'g'))) . l:info
 endfunction
 set foldtext=FoldText()
+
+augroup vimrc_quickfix_format
+  autocmd!
+  autocmd BufReadPost quickfix call vimrc#quickfix#format()
+augroup END
 " }}}
 " GUI settings {{{
 if has('gui_running')
