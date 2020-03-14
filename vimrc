@@ -780,11 +780,6 @@ if has('gui_running') || &title
   set titlestring+=%{vimrc#statusline#Readonly()}
 endif
 
-" Allow color schemes to do bright colors without forcing bold.
-if &t_Co == 8 && $TERM !~# '^Eterm'
-  set t_Co=16
-endif
-
 " Setup color scheme
 function! s:OverrideColors() abort
   hi! link Error NONE
@@ -797,11 +792,17 @@ augroup vimrc_colorscheme
 augroup END
 
 " Default colorscheme for fallback
-if !exists('g:colors_name')
-  if &t_Co >= 88
-    colorscheme baycomb
-  else
-    colorscheme desert
+if &t_Co > 2 || has('gui_running')
+  " Allow color schemes to do bright colors without forcing bold.
+  if &t_Co == 8 && $TERM !~# '^Eterm'
+    set t_Co=16
+  endif
+  if !exists('g:colors_name')
+    if &t_Co >= 88
+      colorscheme baycomb
+    else
+      colorscheme desert
+    endif
   endif
 endif
 
