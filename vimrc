@@ -24,7 +24,7 @@ if !has('nvim')
   if empty($XDG_DATA_HOME)
     let $XDG_DATA_HOME = $HOME . '/.local/share'
   endif
- 
+
   set directory=$XDG_DATA_HOME/vim/swap//
   set backupdir=$XDG_DATA_HOME/vim/backup
   if has('persistent_undo')
