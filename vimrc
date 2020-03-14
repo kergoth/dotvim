@@ -42,6 +42,7 @@ if !has('nvim')
   endif
 else
   let g:netrw_home = $XDG_DATA_HOME . '/nvim'
+  set backupdir-=.
 endif
 
 " Ensure we cover all temp files for backup file creation
