@@ -137,7 +137,7 @@ set autowriteall
 set shortmess=atIWocOTF
 
 " Further reduce the Press ENTER prompts
-set cmdheight=1
+set cmdheight=2
 
 " Longer command/search history
 set history=1000
