@@ -6,7 +6,7 @@ function! vimrc#minpac#packages()
 
   call minpac#add('ajh17/VimCompletesMe')
   call minpac#add('christoomey/vim-tmux-navigator')
-  call minpac#add('ConradIrwin/vim-bracketed-paste')
+  call minpac#add('ConradIrwin/vim-bracketed-paste', {'type': 'opt'})
   call minpac#add('dense-analysis/ale')
   call minpac#add('dhruvasagar/vim-zoom')
   call minpac#add('dracula/vim', {'name': 'dracula'})
