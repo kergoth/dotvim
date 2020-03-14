@@ -67,8 +67,13 @@ endtry
 " Rename the file to the backup when possible.
 set backupcopy=auto
 
+" Don't include options in session and views
+set sessionoptions-=options
+set viewoptions-=options
+
 " Viminfo file behavior
 if has('viminfo') || has('shada')
+  " !   save capital global variables
   " f1  store file marks
   " '   # of previously edited files to remember marks for
   " :   # of lines of command history
@@ -76,7 +81,7 @@ if has('viminfo') || has('shada')
   " <   max # of lines for each register to be saved
   " s   max # of Kb for each register to be saved
   " h   don't restore hlsearch behavior
-  set viminfo=f1,'1000,:1000,/1000,<1000,s100,h,r/tmp
+  set viminfo=!,f1,'1000,:1000,/1000,<1000,s100,h,r/tmp
   if !has('nvim')
     let &viminfo .= ',n' . $VIMINFO
   endif
@@ -204,10 +209,11 @@ if has('linebreak')
   set cpoptions+=n
 end
 
-if &shell =~# 'fish'
-  " Vim makes assumptions about shell behavior, so don't rely on $SHELL
-  set shell=sh
-elseif has('win32')
+if &shell =~# 'fish$' && (v:version < 704 || v:version == 704 && !has('patch276'))
+  set shell=/usr/bin/env\ bash
+endif
+
+if has('win32')
   " Enable dwrite support
   try
     set renderoptions=type:directx
@@ -323,6 +329,9 @@ set formatoptions-=t
 set shiftwidth=4
 set softtabstop=4
 set expandtab
+
+" Obey shiftwidth when inserting tabs at the start of line
+set smarttab
 
 " Copy indent from current line when starting a new line
 set autoindent
@@ -572,6 +581,10 @@ try
 catch
 endtry
 
+" Break undo so each word deleted is its own.
+" Revert with ":iunmap <C-W>".
+inoremap <C-W> <C-G>u<C-W>
+
 " Convert a single line shell script to multiline
 function! SplitShellLine() abort
   silent! exe '%s/ *; */\r/g'
@@ -765,6 +778,11 @@ augroup END
 if has('gui_running') || &title
   set titlestring=%(%{&bt!=#''?&bt:vimrc#statusline#Filename_Modified()}\ %)
   set titlestring+=%{vimrc#statusline#Readonly()}
+endif
+
+" Allow color schemes to do bright colors without forcing bold.
+if &t_Co == 8 && $TERM !~# '^Eterm'
+  set t_Co=16
 endif
 
 " Setup color scheme
