@@ -358,14 +358,13 @@ set copyindent
 set textwidth=78
 " }}}
 " Syntax and highlighting {{{
-
 " Colors red both trailing whitespace:
 "  foo   
 "  bar	
 " And spaces before tabs:
 "  foo 	bar
-hi def link RedundantWhitespace Error
-match RedundantWhitespace /\S\zs\s\+$\| \+\ze\t/
+highlight link RedundantWhitespace Error
+autocmd Syntax * syntax match RedundantWhitespace excludenl /\s\+\%#\@<!$\| \+\ze\t/ display containedin=ALL
 
 " We care quite a lot about the length of the git commit summary line
 hi def link gitcommitOverflow Error
