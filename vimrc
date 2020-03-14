@@ -11,21 +11,42 @@ else
 endif
 let &packpath = &runtimepath
 
-" Do not write these next to the file
-set backupdir-=.
-set undodir-=.
-
-" Ensure we cover all temp files for backup file creation
-if $OSTYPE =~? 'darwin'
-  set backupskip+=/private/tmp/*
-endif
-
 if v:version >= 800 && !has('nvim')
   unlet! skip_defaults_vim
   source $VIMRUNTIME/defaults.vim
 else
   " Use version embedded in my dotvim
   runtime embedded/defaults.vim
+endif
+
+" Use XDG paths
+if !has('nvim')
+  if empty($XDG_DATA_HOME)
+    let $XDG_DATA_HOME = $HOME . '/.local/share'
+  endif
+ 
+  set directory=$XDG_DATA_HOME/vim/swap//
+  set backupdir=$XDG_DATA_HOME/vim/backup
+  if has('persistent_undo')
+    set undodir=$XDG_DATA_HOME/vim/undo
+  endif
+  set viewdir=$XDG_DATA_HOME/vim/view
+  let g:netrw_home = $XDG_DATA_HOME . '/vim'
+
+  if has('viminfo')
+    if exists('&viminfofile')
+      set viminfofile=$XDG_DATA_HOME/vim/viminfo
+    else
+      let s:viminfofile = $XDG_DATA_HOME . '/vim/viminfo'
+    endif
+  endif
+else
+  let g:netrw_home = $XDG_DATA_HOME . '/nvim'
+endif
+
+" Ensure we cover all temp files for backup file creation
+if $OSTYPE =~? 'darwin'
+  set backupskip+=/private/tmp/*
 endif
 
 " vint: -ProhibitAutocmdWithNoGroup
@@ -82,8 +103,8 @@ if has('viminfo') || has('shada')
   " s   max # of Kb for each register to be saved
   " h   don't restore hlsearch behavior
   set viminfo=!,f1,'1000,:1000,/1000,<1000,s100,h,r/tmp
-  if !has('nvim')
-    let &viminfo .= ',n' . $VIMINFO
+  if !exists('&viminfofile')
+    let &viminfo .= ',n' . s:viminfofile
   endif
 endif
 
