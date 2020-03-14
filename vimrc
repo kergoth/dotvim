@@ -212,12 +212,7 @@ set grepformat+=%-OBinary\ file%.%#
 
 if has('multi_byte') && &encoding ==# 'utf-8'
   " Display of hidden characters
-  set listchars=tab:»·,eol:¬,extends:❯,precedes:❮,nbsp:±
-
-  " Show trailing whitespace this way if we aren't highlighting it in color
-  if &t_Co < 3 && (! has('gui_running'))
-    set listchars+=trail:·
-  endif
+  let &listchars = "tab:\u21e5 ,eol:\u00ac,trail:\u2423,extends:\u21c9,precedes:\u21c7,nbsp:\u26ad"
 endif
 
 " Do soft word wrapping at chars in breakat
