@@ -160,6 +160,12 @@ endif
 " Always show the completion menu for the preview
 set completeopt=longest,menuone,preview
 
+" Disable scanning included files
+set complete-=i
+
+" Disable searching tags
+set complete-=t
+
 " Search tools
 if executable('rg')
   set grepprg=rg\ --smart-case\ --vimgrep\ $*
