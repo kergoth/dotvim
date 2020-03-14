@@ -186,9 +186,6 @@ if has('multi_byte') && &encoding ==# 'utf-8'
   if &t_Co < 3 && (! has('gui_running'))
     set listchars+=trail:·
   endif
-
-  " Simple display, no unnecessary fills
-  set fillchars=
 endif
 
 " Do soft word wrapping at chars in breakat
