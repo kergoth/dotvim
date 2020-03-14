@@ -362,7 +362,11 @@ if exists('&colorcolumn')
 endif
 
 " Highlight the cursor line
-set cursorline
+augroup vimrc_cursorline
+  autocmd!
+  autocmd InsertLeave,WinEnter * set cursorline
+  autocmd InsertEnter,WinLeave * set nocursorline
+augroup END
 " }}}
 " Commands {{{
 " Grep asynchronously with Dispatch
