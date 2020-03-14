@@ -214,6 +214,7 @@ if has('multi_byte') && &encoding ==# 'utf-8'
   " Display of hidden characters
   let &listchars = "tab:\u21e5 ,eol:\u00ac,trail:\u2423,extends:\u21c9,precedes:\u21c7,nbsp:\u26ad"
 endif
+set fillchars=stl:\ ,stlnc:\ ,vert:\ ,fold:\ ,diff:-
 
 " Do soft word wrapping at chars in breakat
 if has('linebreak')
