@@ -1,4 +1,4 @@
-" Filesystem paths {{{
+" Bootstrap {{{
 let $MYVIMRC = expand('<sfile>:p')
 let $VIMDOTDIR = fnamemodify($MYVIMRC, ':h')
 
@@ -15,18 +15,11 @@ let &packpath = &runtimepath
 set backupdir-=.
 set undodir-=.
 
-" Double slash does not actually work for backupdir, here's a fix
-augroup vimrc_backupdir
-  au!
-  au BufWritePre * let &backupext='@'.substitute(substitute(substitute(expand('%:p:h'), '/', '%', 'g'), '\', '%', 'g'), ':', '', 'g')
-augroup END
-
 " Ensure we cover all temp files for backup file creation
 if $OSTYPE =~? 'darwin'
   set backupskip+=/private/tmp/*
 endif
-" }}}
-" Defaults {{{
+
 if v:version >= 800 && !has('nvim')
   unlet! skip_defaults_vim
   source $VIMRUNTIME/defaults.vim
@@ -34,6 +27,13 @@ else
   " Use version embedded in my dotvim
   runtime embedded/defaults.vim
 endif
+
+" vint: -ProhibitAutocmdWithNoGroup
+exe 'augroup my'
+autocmd!
+
+" Double slash does not actually work for backupdir, here's a fix
+autocmd BufWritePre * let &backupext='@'.substitute(substitute(substitute(expand('%:p:h'), '/', '%', 'g'), '\', '%', 'g'), ':', '', 'g')
 " }}}
 " Encoding {{{
 if has('multi_byte')
@@ -233,93 +233,90 @@ if has('patch-8.1.0360')
   set diffopt+=internal,algorithm:patience
 endif
 
-augroup vimrc
-  au!
 
-  " Reload vimrc on save
-  au BufWritePost $MYVIMRC nested source $MYVIMRC | edit $MYVIMRC
+" Reload vimrc on save
+autocmd BufWritePost $MYVIMRC nested source $MYVIMRC | edit $MYVIMRC
 
-  " Default to closed marker folds in my vimrc
-  au BufRead $MYVIMRC setl fdm=marker | if &foldlevel == &foldlevelstart | setl foldlevel=0 | endif
+" Default to closed marker folds in my vimrc
+autocmd BufRead $MYVIMRC setl fdm=marker | if &foldlevel == &foldlevelstart | setl foldlevel=0 | endif
 
-  " Resize splits when the window is resized
-  au VimResized * exe "normal! \<c-w>="
+" Resize splits when the window is resized
+autocmd VimResized * exe "normal! \<c-w>="
 
-  " Automatically open, but do not go to (if there are errors) the quickfix /
-  " location list window, or close it when is has become empty.
-  "
-  " Note: Must allow nesting of autocmds to enable any customizations for quickfix
-  " buffers.
-  autocmd QuickFixCmdPost [^l]* nested cwindow
-  autocmd QuickFixCmdPost    l* nested lwindow
+" Automatically open, but do not go to (if there are errors) the quickfix /
+" location list window, or close it when is has become empty.
+"
+" Note: Must allow nesting of autocmds to enable any customizations for quickfix
+" buffers.
+autocmd QuickFixCmdPost [^l]* nested cwindow
+autocmd QuickFixCmdPost    l* nested lwindow
 
-  " Adjust the quickfix window height to avoid unnecessary padding
-  function! AdjustWindowHeight(minheight, maxheight)
-    let l = 1
-    let n_lines = 0
-    let w_width = winwidth(0)
-    while l <= line('$')
-      " number to float for division
-      let l_len = strlen(getline(l)) + 0.0
-      let line_width = l_len/w_width
-      let n_lines += float2nr(ceil(line_width))
-      let l += 1
-    endw
-    exe max([min([n_lines, a:maxheight]), a:minheight]) . 'wincmd _'
-  endfunction
-  au FileType qf call AdjustWindowHeight(3, 10)
+" Adjust the quickfix window height to avoid unnecessary padding
+function! AdjustWindowHeight(minheight, maxheight)
+  let l = 1
+  let n_lines = 0
+  let w_width = winwidth(0)
+  while l <= line('$')
+    " number to float for division
+    let l_len = strlen(getline(l)) + 0.0
+    let line_width = l_len/w_width
+    let n_lines += float2nr(ceil(line_width))
+    let l += 1
+  endw
+  exe max([min([n_lines, a:maxheight]), a:minheight]) . 'wincmd _'
+endfunction
+autocmd FileType qf call AdjustWindowHeight(3, 10)
 
-  " Close out the quickfix window if it's the only open window
-  function! s:QuickFixClose()
-    if &buftype ==# 'quickfix'
-      " if this window is last on screen, quit
-      if winnr('$') < 2
-        quit
-      endif
+" Close out the quickfix window if it's the only open window
+function! s:QuickFixClose()
+  if &buftype ==# 'quickfix'
+    " if this window is last on screen, quit
+    if winnr('$') < 2
+      quit
     endif
-  endfunction
-  au BufEnter * call <SID>QuickFixClose()
-
-  " Close preview window when the completion menu closes
-  autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
-
-  " Unset paste on InsertLeave
-  au InsertLeave * silent! set nopaste
-
-  if exists('$TMUX')
-    function! s:TmuxRename() abort
-      if !exists('g:tmux_automatic_rename')
-        let l:tmux_output = system('tmux show-window-options -v automatic-rename')
-        if l:tmux_output ==# ''
-          let l:tmux_output = system('tmux show-window-options -gv automatic-rename')
-        endif
-        try
-          let g:tmux_automatic_rename = trim(l:tmux_output)
-        catch
-          let g:tmux_automatic_rename = split(l:tmux_output)[0]
-        endtry
-      endif
-      return g:tmux_automatic_rename ==# 'on'
-    endfunction
-
-    au BufEnter * if s:TmuxRename() && empty(&buftype) | call system('tmux rename-window '.expand('%:t:S')) | endif
-    au VimLeave * if s:TmuxRename() | call system('tmux set-window automatic-rename on') | endif
   endif
+endfunction
+autocmd BufEnter * call <SID>QuickFixClose()
 
-  " Expand the fold where the cursor lives
-  autocmd BufWinEnter * silent! exe "normal! zv"
+" Close preview window when the completion menu closes
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
-  " Automatically create missing directory
-  function! s:MkNonExDir(file, buf) abort
-    if empty(getbufvar(a:buf, '&buftype')) && a:file!~#'\v^\w+\:\/'
-      let dir=fnamemodify(a:file, ':h')
-      if !isdirectory(dir)
-        call mkdir(dir, 'p')
+" Unset paste on InsertLeave
+autocmd InsertLeave * silent! set nopaste
+
+if exists('$TMUX')
+  function! s:TmuxRename() abort
+    if !exists('g:tmux_automatic_rename')
+      let l:tmux_output = system('tmux show-window-options -v automatic-rename')
+      if l:tmux_output ==# ''
+        let l:tmux_output = system('tmux show-window-options -gv automatic-rename')
       endif
+      try
+        let g:tmux_automatic_rename = trim(l:tmux_output)
+      catch
+        let g:tmux_automatic_rename = split(l:tmux_output)[0]
+      endtry
     endif
+    return g:tmux_automatic_rename ==# 'on'
   endfunction
-  autocmd BufWritePre,FileWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))
-augroup END
+
+  autocmd BufEnter * if s:TmuxRename() && empty(&buftype) | call system('tmux rename-window '.expand('%:t:S')) | endif
+  autocmd VimLeave * if s:TmuxRename() | call system('tmux set-window automatic-rename on') | endif
+endif
+
+" Expand the fold where the cursor lives
+autocmd BufWinEnter * silent! exe "normal! zv"
+
+" Automatically create missing directory
+function! s:MkNonExDir(file, buf) abort
+  if empty(getbufvar(a:buf, '&buftype')) && a:file!~#'\v^\w+\:\/'
+    let dir=fnamemodify(a:file, ':h')
+    if !isdirectory(dir)
+      call mkdir(dir, 'p')
+    endif
+  endif
+endfunction
+autocmd BufWritePre,FileWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))
 " }}}
 " Indentation and formatting {{{
 set formatoptions+=rn1j
@@ -366,19 +363,13 @@ hi! link DiffText MatchParen
 
 " Highlight the textwidth column
 if exists('&colorcolumn')
-  augroup KergothColorColumn
-    au!
-    au InsertEnter * set colorcolumn=+1
-    au InsertLeave * set colorcolumn=
-  augroup END
+  autocmd InsertEnter * set colorcolumn=+1
+  autocmd InsertLeave * set colorcolumn=
 endif
 
 " Highlight the cursor line
-augroup vimrc_cursorline
-  autocmd!
-  autocmd InsertLeave,WinEnter * set cursorline
-  autocmd InsertEnter,WinLeave * set nocursorline
-augroup END
+autocmd InsertLeave,WinEnter * set cursorline
+autocmd InsertEnter,WinLeave * set nocursorline
 " }}}
 " Commands {{{
 " Grep asynchronously with Dispatch
@@ -594,25 +585,22 @@ function! SplitShellLine() abort
   Format
 endfunction
 
-augroup vimrc_mapping
-  au!
 
-  au FileType sh,zsh nnoremap <buffer> <silent> L :call SplitShellLine()<cr>
+autocmd FileType sh,zsh nnoremap <buffer> <silent> L :call SplitShellLine()<cr>
 
-  " dirvish: map `gr` to reload.
-  autocmd FileType dirvish nnoremap <silent><buffer>
-        \ gr :<C-U>Dirvish %<CR>
+" dirvish: map `gr` to reload.
+autocmd FileType dirvish nnoremap <silent><buffer>
+      \ gr :<C-U>Dirvish %<CR>
 
-  " dirvish: map `gh` to hide dot-prefixed files.  Press `R` to "toggle" (reload).
-  autocmd FileType dirvish nnoremap <silent><buffer>
-        \ gh :silent keeppatterns g@\v/\.[^\/]+/?$@d _<cr>:setl cole=3<cr>
+" dirvish: map `gh` to hide dot-prefixed files.  Press `R` to "toggle" (reload).
+autocmd FileType dirvish nnoremap <silent><buffer>
+      \ gh :silent keeppatterns g@\v/\.[^\/]+/?$@d _<cr>:setl cole=3<cr>
 
-  " Let ,C also close the dirvish window, from that window
-  autocmd FileType dirvish nnoremap <silent><buffer> ,wC <Plug>(dirvish_quit)
+" Let ,C also close the dirvish window, from that window
+autocmd FileType dirvish nnoremap <silent><buffer> ,wC <Plug>(dirvish_quit)
 
-  " Let ,C also close the command-line window
-  autocmd CmdWinEnter * nnoremap <silent><buffer> ,wC <C-c><C-c>
-augroup END
+" Let ,C also close the command-line window
+autocmd CmdWinEnter * nnoremap <silent><buffer> ,wC <C-c><C-c>
 
 " Unimpaired Mappings {{{
 " Functionality from https://github.com/tpope/vim-unimpaired
@@ -735,12 +723,9 @@ else
     let $CURSORCODE = "\e[0 q"
   endif
 
-  augroup vimrc_cursor
-    au!
-    " Reset cursor on start and exit
-    autocmd VimEnter * silent !printf '\e[2 q\n'
-    autocmd VimLeave * silent !printf "$CURSORCODE"
-  augroup END
+  " Reset cursor on start and exit
+  autocmd VimEnter * silent !printf '\e[2 q\n'
+  autocmd VimLeave * silent !printf "$CURSORCODE"
 endif
 
 " Always show the status line
@@ -768,11 +753,8 @@ set statusline+=%(\ %{&fileencoding!=#'utf-8'?&fileencoding:''}\ %)
 
 let g:statusline_quickfix = "%t%{exists('w:quickfix_title')?' '.w:quickfix_title:''}"
 
-augroup vimrc_statusline
-  au!
-  " Remove the position info from the quickfix statusline
-  au BufWinEnter quickfix if exists('g:statusline_quickfix') | let &l:statusline = g:statusline_quickfix | endif
-augroup END
+" Remove the position info from the quickfix statusline
+autocmd BufWinEnter quickfix if exists('g:statusline_quickfix') | let &l:statusline = g:statusline_quickfix | endif
 
 " Align titlestring with statusline
 if has('gui_running') || &title
@@ -786,10 +768,7 @@ function! s:OverrideColors() abort
   hi! Error ctermbg=darkred guibg=darkred ctermfg=black guifg=black
 endfunction
 
-augroup vimrc_colorscheme
-  autocmd!
-  autocmd ColorScheme * :call s:OverrideColors()
-augroup END
+autocmd ColorScheme * :call s:OverrideColors()
 
 " Default colorscheme for fallback
 if &t_Co > 2 || has('gui_running')
@@ -857,10 +836,7 @@ function! FoldText()
 endfunction
 set foldtext=FoldText()
 
-augroup vimrc_quickfix_format
-  autocmd!
-  autocmd BufReadPost quickfix call vimrc#quickfix#format()
-augroup END
+autocmd BufReadPost quickfix call vimrc#quickfix#format()
 " }}}
 " GUI settings {{{
 if has('gui_running')
@@ -884,85 +860,76 @@ if has('gui_running')
   " dialogs for simple choices
   set guioptions+=c
 
-  augroup gvimrc
-    au!
-    au GUIEnter * set columns=96 lines=48
-  augroup END
+  autocmd GUIEnter * set columns=96 lines=48
 end
 " }}}
 " File type detection {{{
-augroup vimrc_filetype_detect
-  au!
 
-  au BufNewFile,BufRead TODO,BUGS,README set ft=text
-  au BufNewFile,BufRead ~/.config/git/config set ft=gitconfig
+autocmd BufNewFile,BufRead TODO,BUGS,README set ft=text
+autocmd BufNewFile,BufRead ~/.config/git/config set ft=gitconfig
 
-  au BufNewFile,BufRead git-revise-todo setf gitrebase
+autocmd BufNewFile,BufRead git-revise-todo setf gitrebase
 
-  " My dotfiles install scripts are shell
-  au BufNewFile,BufRead install setf sh
+" My dotfiles install scripts are shell
+autocmd BufNewFile,BufRead install setf sh
 
-  " Mentor Embedded Linux & OpenEmbedded/Yocto
-  au BufNewFile,BufRead local.conf.append* set ft=bitbake
-  au BufNewFile,BufRead setup-environment,oe-init-build-env set ft=sh
+" Mentor Embedded Linux & OpenEmbedded/Yocto
+autocmd BufNewFile,BufRead local.conf.append* set ft=bitbake
+autocmd BufNewFile,BufRead setup-environment,oe-init-build-env set ft=sh
 
-  " Default ft is 'text'
-  au BufNewFile,BufReadPost * if &ft ==# '' | set ft=text | endif
+" Default ft is 'text'
+autocmd BufNewFile,BufReadPost * if &ft ==# '' | set ft=text | endif
 
-  " Treat buffers from stdin (e.g.: echo foo | vim -) as scratch.
-  au StdinReadPost * :set buftype=nofile
-augroup END
+" Treat buffers from stdin (e.g.: echo foo | vim -) as scratch.
+autocmd StdinReadPost * :set buftype=nofile
 " }}}
 " File type settings {{{
-augroup vimrc_filetypes
-  au!
 
-  " Set filetypes
+" Set filetypes
 
-  " File type specific indentation settings
-  au FileType vim set sts=2 sw=2 et
-  au FileType gitconfig set sts=0 sw=8 noet
+" File type specific indentation settings
+autocmd FileType vim set sts=2 sw=2 et
+autocmd FileType gitconfig set sts=0 sw=8 noet
 
-  " Comment string
-  au FileType gitconfig set cms=#%s
+" Comment string
+autocmd FileType gitconfig set cms=#%s
 
-  " Set up folding
-  au FileType c,cpp,lua,vim,sh,go,gitcommit set fdm=syntax
-  au FileType text set fdm=indent
-  au FileType man set fdl=99 fdm=manual
+" Set up folding
+autocmd FileType c,cpp,lua,vim,sh,go,gitcommit set fdm=syntax
+autocmd FileType text set fdm=indent
+autocmd FileType man set fdl=99 fdm=manual
 
-  " Default to indent based folding rather than manual
-  au FileType *
-        \ if  &filetype == '' |
-        \   set fdm=indent |
-        \ endif
+" Default to indent based folding rather than manual
+autocmd FileType *
+      \ if  &filetype == '' |
+      \   set fdm=indent |
+      \ endif
 
-  " Default to syntax completion if we have nothing better
-  au FileType *
-        \ if &omnifunc == "" |
-        \   set omnifunc=syntaxcomplete#Complete |
-        \ else |
-        \   let b:vcm_tab_complete = 'omni' |
-        \ endif
+" Default to syntax completion if we have nothing better
+autocmd FileType *
+      \ if &omnifunc == "" |
+      \   set omnifunc=syntaxcomplete#Complete |
+      \ else |
+      \   let b:vcm_tab_complete = 'omni' |
+      \ endif
 
-  " Diff context begins with a space, so blank lines of context
-  " are being inadvertantly flagged as redundant whitespace.
-  " Adjust the match to exclude the first column.
-  au Syntax diff match RedundantWhitespace /\%>1c\(\s\+$\| \+\ze\t\)/
+" Diff context begins with a space, so blank lines of context
+" are being inadvertantly flagged as redundant whitespace.
+" Adjust the match to exclude the first column.
+autocmd Syntax diff match RedundantWhitespace /\%>1c\(\s\+$\| \+\ze\t\)/
 
-  " Add headings with <localleader> + numbers
-  au Filetype rst nnoremap <buffer> <localleader>1 yypVr=
-  au Filetype rst nnoremap <buffer> <localleader>2 yypVr-
-  au Filetype rst nnoremap <buffer> <localleader>3 yypVr~
-  au Filetype rst nnoremap <buffer> <localleader>4 yypVr`
-  au Filetype markdown nnoremap <buffer> <localleader>1 I#<space>
-  au Filetype markdown nnoremap <buffer> <localleader>2 I##<space>
-  au Filetype markdown nnoremap <buffer> <localleader>3 I###<space>
-  au Filetype markdown nnoremap <buffer> <localleader>4 I####<space>
+" Add headings with <localleader> + numbers
+autocmd FileType rst nnoremap <buffer> <localleader>1 yypVr=
+autocmd FileType rst nnoremap <buffer> <localleader>2 yypVr-
+autocmd FileType rst nnoremap <buffer> <localleader>3 yypVr~
+autocmd FileType rst nnoremap <buffer> <localleader>4 yypVr`
+autocmd FileType markdown nnoremap <buffer> <localleader>1 I#<space>
+autocmd FileType markdown nnoremap <buffer> <localleader>2 I##<space>
+autocmd FileType markdown nnoremap <buffer> <localleader>3 I###<space>
+autocmd FileType markdown nnoremap <buffer> <localleader>4 I####<space>
 
-  " Don't restore position in a git commit message
-  au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
-augroup END
+" Don't restore position in a git commit message
+autocmd FileType gitcommit augroup my_gitcommit | autocmd! | autocmd BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0]) | augroup END
 
 " Highlight GNU gcc specific items
 let g:c_gnu = 1
@@ -1048,4 +1015,5 @@ if !exists('$HOSTNAME')
 endif
 runtime vimrc.$HOSTNAME
 runtime vimrc.local
+exe 'augroup END'
 " }}}
