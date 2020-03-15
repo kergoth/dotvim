@@ -1,3 +1,5 @@
 /pack/
 /vimrc.*
 !/vimrc.redir
+/bundle
+/local
