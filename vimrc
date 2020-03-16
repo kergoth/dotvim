@@ -970,10 +970,8 @@ autocmd FileType *
       \   let b:vcm_tab_complete = 'omni' |
       \ endif
 
-" Diff context begins with a space, so blank lines of context
-" are being inadvertantly flagged as redundant whitespace.
-" Adjust the match to exclude the first column.
-autocmd Syntax diff match RedundantWhitespace /\%>1c\(\s\+$\| \+\ze\t\)/
+" Ignore whitespace issues in patch files
+autocmd Syntax diff highlight link RedundantWhitespace NONE
 
 " Add headings with <localleader> + numbers
 autocmd FileType rst nnoremap <buffer> <localleader>1 yypVr=
