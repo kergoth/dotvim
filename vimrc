@@ -931,8 +931,6 @@ if has('gui_running')
 end
 " }}}
 " File type detection {{{
-autocmd BufNewFile,BufRead ~/.config/git/config set ft=gitconfig
-
 autocmd BufNewFile,BufRead git-revise-todo setf gitrebase
 
 " My dotfiles install scripts are shell
