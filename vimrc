@@ -951,21 +951,21 @@ autocmd StdinReadPost * :set buftype=nofile
 " Set filetypes
 
 " File type specific indentation settings
-autocmd FileType vim set sts=2 sw=2 et
-autocmd FileType gitconfig set sts=0 sw=8 noet
+autocmd FileType vim setlocal sts=2 sw=2 et
+autocmd FileType gitconfig setlocal sts=0 sw=8 noet
 
 " Comment string
-autocmd FileType gitconfig set cms=#%s
+autocmd FileType gitconfig setlocal cms=#%s
 
 " Set up folding
-autocmd FileType c,cpp,lua,vim,sh,go,gitcommit set fdm=syntax
-autocmd FileType text set fdm=indent
-autocmd FileType man set fdl=99 fdm=manual
+autocmd FileType c,cpp,lua,vim,sh,go,gitcommit setlocal fdm=syntax
+autocmd FileType text setlocal fdm=indent
+autocmd FileType man setlocal fdl=99 fdm=manual
 
 " Default to syntax completion if we have nothing better
 autocmd FileType *
       \ if &omnifunc == "" |
-      \   set omnifunc=syntaxcomplete#Complete |
+      \   setlocal omnifunc=syntaxcomplete#Complete |
       \ else |
       \   let b:vcm_tab_complete = 'omni' |
       \ endif
