@@ -962,12 +962,6 @@ autocmd FileType c,cpp,lua,vim,sh,go,gitcommit set fdm=syntax
 autocmd FileType text set fdm=indent
 autocmd FileType man set fdl=99 fdm=manual
 
-" Default to indent based folding rather than manual
-autocmd FileType *
-      \ if  &filetype == '' |
-      \   set fdm=indent |
-      \ endif
-
 " Default to syntax completion if we have nothing better
 autocmd FileType *
       \ if &omnifunc == "" |
