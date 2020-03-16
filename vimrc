@@ -960,7 +960,6 @@ autocmd FileType gitconfig setlocal cms=#%s
 " Set up folding
 autocmd FileType c,cpp,lua,vim,sh,go,gitcommit setlocal fdm=syntax
 autocmd FileType text setlocal fdm=indent
-autocmd FileType man setlocal fdl=99 fdm=manual
 
 " Default to syntax completion if we have nothing better
 autocmd FileType *
@@ -992,7 +991,7 @@ let g:c_gnu = 1
 " Allow posix elements like $() in /bin/sh scripts
 let g:is_posix = 1
 
-" Enable syntax folding
+" Enable ft/syntax folding
 let g:javaScript_fold = 1
 let g:markdown_folding = 1
 let g:perl_fold = 1
@@ -1005,6 +1004,7 @@ let g:sh_fold_enabled = 7
 let g:tex_fold_enabled = 1
 let g:vimsyn_folding = 'af'
 let g:xml_syntax_folding = 1
+let g:ft_man_folding_enable = 1
 
 " Disable new bitbake file template
 let g:bb_create_on_empty = 0
