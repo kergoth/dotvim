@@ -640,6 +640,9 @@ endtry
 " Revert with ":iunmap <C-W>".
 inoremap <C-W> <C-G>u<C-W>
 
+" Disable ^C in insert mode, as it exits without the InsertLeave event
+inoremap <C-c> <NOP>
+
 " Convert a single line shell script to multiline
 function! SplitShellLine() abort
   silent! exe '%s/ *; */\r/g'
