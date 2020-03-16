@@ -947,17 +947,14 @@ autocmd BufNewFile,BufReadPost * if &ft ==# '' | set ft=text | endif
 autocmd StdinReadPost * :set buftype=nofile
 " }}}
 " File type settings {{{
-
-" Set filetypes
-
-" File type specific indentation settings
+" Indentation settings
 autocmd FileType vim setlocal sts=2 sw=2 et
 autocmd FileType gitconfig setlocal sts=0 sw=8 noet
 
 " Comment string
 autocmd FileType gitconfig setlocal cms=#%s
 
-" Set up folding
+" Folding
 autocmd FileType c,cpp,lua,vim,sh,go,gitcommit setlocal fdm=syntax
 autocmd FileType text setlocal fdm=indent
 
