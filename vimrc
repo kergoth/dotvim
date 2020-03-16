@@ -148,8 +148,17 @@ if has('folding')
   set foldlevelstart=99
 endif
 
+" Disable scanning included files
+set complete-=i
+
+" Disable searching tags
+set complete-=t
+
+" Always show the completion menu for the preview
+set completeopt=longest,menuone,preview
+
 " Make completion list behave more like a shell
-set wildmode=list:longest
+set wildmode=longest:full,full
 
 " Files we don't want listed
 set wildignore+=.hg,.git,.svn                    " Version control
@@ -183,15 +192,6 @@ if has('persistent_undo')
   set undofile
   set undolevels=5000
 endif
-
-" Always show the completion menu for the preview
-set completeopt=longest,menuone,preview
-
-" Disable scanning included files
-set complete-=i
-
-" Disable searching tags
-set complete-=t
 
 " Search tools
 if executable('rg')
