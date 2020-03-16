@@ -973,15 +973,15 @@ autocmd FileType *
 " Ignore whitespace issues in patch files
 autocmd Syntax diff highlight link RedundantWhitespace NONE
 
-" Add headings with <localleader> + numbers
-autocmd FileType rst nnoremap <buffer> <localleader>1 yypVr=
-autocmd FileType rst nnoremap <buffer> <localleader>2 yypVr-
-autocmd FileType rst nnoremap <buffer> <localleader>3 yypVr~
-autocmd FileType rst nnoremap <buffer> <localleader>4 yypVr`
-autocmd FileType markdown nnoremap <buffer> <localleader>1 I#<space>
-autocmd FileType markdown nnoremap <buffer> <localleader>2 I##<space>
-autocmd FileType markdown nnoremap <buffer> <localleader>3 I###<space>
-autocmd FileType markdown nnoremap <buffer> <localleader>4 I####<space>
+" Add headings
+autocmd FileType rst nnoremap <buffer> \1 yypVr=
+autocmd FileType rst nnoremap <buffer> \2 yypVr-
+autocmd FileType rst nnoremap <buffer> \3 yypVr~
+autocmd FileType rst nnoremap <buffer> \4 yypVr`
+autocmd FileType markdown nnoremap <buffer> \1 I#<space>
+autocmd FileType markdown nnoremap <buffer> \2 I##<space>
+autocmd FileType markdown nnoremap <buffer> \3 I###<space>
+autocmd FileType markdown nnoremap <buffer> \4 I####<space>
 
 " Don't restore position in a git commit message
 autocmd FileType gitcommit augroup my_gitcommit | autocmd! | autocmd BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0]) | augroup END
