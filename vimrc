@@ -931,8 +931,6 @@ if has('gui_running')
 end
 " }}}
 " File type detection {{{
-
-autocmd BufNewFile,BufRead TODO,BUGS,README set ft=text
 autocmd BufNewFile,BufRead ~/.config/git/config set ft=gitconfig
 
 autocmd BufNewFile,BufRead git-revise-todo setf gitrebase
