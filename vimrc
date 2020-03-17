@@ -940,7 +940,7 @@ autocmd FileType gitconfig setlocal sts=0 sw=8 noet
 autocmd FileType gitconfig setlocal cms=#%s
 
 " Folding
-autocmd FileType c,cpp,lua,vim,sh,go,gitcommit setlocal fdm=syntax
+autocmd FileType c,cpp,lua,vim,sh setlocal fdm=syntax
 autocmd FileType text setlocal fdm=indent
 
 " Default to syntax completion if we have nothing better
