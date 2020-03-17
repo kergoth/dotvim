@@ -582,7 +582,7 @@ nnoremap <silent> ,D :bd<cr>
 function! CCR()
   let cmdline = getcmdline()
   command! -bar Z silent set more|delcommand Z
-  if getcmdtype() != ':'
+  if getcmdtype() !=# ':'
     return "\<CR>"
   endif
   if cmdline =~# '\v\C^(ls|files|buffers)'
