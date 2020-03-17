@@ -118,12 +118,6 @@ set confirm
 " Automatically reload files changed outside of vim
 set autoread
 
-" Navigate over visual lines
-noremap j gj
-noremap k gk
-noremap gj j
-noremap gk k
-
 " Keep cursor in the same column when possible
 set nostartofline
 
@@ -434,6 +428,12 @@ iabbrev teh the
 " Fix command typos
 nmap ; :
 nnoremap ,; ;
+
+" Navigate over visual lines
+noremap j gj
+noremap k gk
+noremap gj j
+noremap gk k
 
 " Make zO recursively open whatever top level fold we're in, no matter where
 " the cursor happens to be.
