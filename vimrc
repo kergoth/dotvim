@@ -416,9 +416,6 @@ endif
 " Change the current directory to the location of the
 " file being edited.
 command! -nargs=0 -complete=command Bcd lcd %:p:h
-
-" Add Fix/Format commands for ALEFix
-command! -bar -nargs=* -complete=customlist,ale#fix#registry#CompleteFixers Format :call ale#fix#Fix(bufnr(''), '', <f-args>)
 " }}}
 " Abbreviations {{{
 iabbrev adn and

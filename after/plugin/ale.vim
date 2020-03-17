@@ -24,6 +24,9 @@ let g:ale_fixers = {
 
 let g:ale_sh_shfmt_options = '-ci -bn -i 4'
 
+" Add Fix/Format commands for ALEFix
+command! -bar -nargs=* -complete=customlist,ale#fix#registry#CompleteFixers Format :call ale#fix#Fix(bufnr(''), '', <f-args>)
+
 " Bind ,f to fixing/formatting with ALE
 nmap ,f <Plug>(ale_fix)
 
