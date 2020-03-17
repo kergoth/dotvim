@@ -247,7 +247,7 @@ endif
 
 
 " Reload vimrc on save
-autocmd BufWritePost $MYVIMRC nested source $MYVIMRC | edit $MYVIMRC
+autocmd BufWritePost $MYVIMRC nested source $MYVIMRC
 
 " Default to closed marker folds in my vimrc
 autocmd BufRead $MYVIMRC setl fdm=marker | if &foldlevel == &foldlevelstart | setl foldlevel=0 | endif
