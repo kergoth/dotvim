@@ -666,7 +666,7 @@ function! ToggleConceal() abort
     setlocal conceallevel=0
   endif
 endfunction
-nnoremap <silent> =oc :call ToggleConceal()<cr>
+nnoremap <silent> =oC :call ToggleConceal()<cr>
 
 " Toggle display of invisible characters
 nnoremap =ol :setlocal list!<CR>
