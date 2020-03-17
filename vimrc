@@ -360,12 +360,12 @@ set textwidth=78
 highlight link RedundantWhitespace Error
 autocmd Syntax * syntax match RedundantWhitespace excludenl /\s\+\%#\@<!$\| \+\ze\t/ display containedin=ALL
 
-" We care quite a lot about the length of the git commit summary line
-hi def link gitcommitOverflow Error
+" Highlight too-long git commit message summaries
+highlight link gitcommitOverflow Error
 
 " Highlight our vim modeline
-hi def link vimModeline Special
-2match vimModeline /vim:\s*set[^:]\{-1,\}:/
+highlight link VimModeline Special
+autocmd Syntax * syntax match VimModeline excludenl /vim:\s*set[^:]\{-1,\}:/ display containedin=ALL
 
 " Fix the difficult-to-read default setting for diff text highlighting.  The
 " bang (!) is required since we are overwriting the DiffText setting. The highlighting
@@ -648,7 +648,6 @@ function! SplitShellLine() abort
   silent! exe '%s/^\(do\|then\) \(.*\)/\1\r\2/g'
   Format
 endfunction
-
 
 autocmd FileType sh,zsh nnoremap <buffer> <silent> L :call SplitShellLine()<cr>
 
