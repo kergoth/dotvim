@@ -669,16 +669,16 @@ endfunction
 nnoremap <silent> =oC :call ToggleConceal()<cr>
 
 " Toggle display of invisible characters
-nnoremap =ol :setlocal list!<CR>
+nnoremap <silent> =ol :setlocal list!<CR>
 
 " Toggle display of line numbers
-nnoremap =on :setlocal number!<CR>
+nnoremap <silent> =on :setlocal number!<CR>
 
 " Toggle relative line numbers
-nnoremap =or :setlocal relativenumber!<CR>
+nnoremap <silent> =or :setlocal relativenumber!<CR>
 
 " Toggle spell checking
-nnoremap =os :setlocal spell!<CR>
+nnoremap <silent> =os :setlocal spell!<CR>
 
 " co as well as =o for convenience
 if empty(maparg('co', 'n'))
