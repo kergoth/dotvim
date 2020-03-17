@@ -379,7 +379,7 @@ if exists('&colorcolumn')
 endif
 
 " Highlight the cursor line
-autocmd InsertLeave,WinEnter * set cursorline
+autocmd InsertLeave,VimEnter,WinEnter * set cursorline
 autocmd InsertEnter,WinLeave * set nocursorline
 " }}}
 " Commands {{{
