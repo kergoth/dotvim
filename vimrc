@@ -654,7 +654,7 @@ autocmd FileType sh,zsh nnoremap <buffer> <silent> L :call SplitShellLine()<cr>
 " Let ,wC also close the command-line window
 autocmd CmdWinEnter * nnoremap <silent><buffer> ,wC <C-c><C-c>
 
-" Unimpaired Mappings {{{
+" Unimpaired-based Mappings {{{
 " Functionality from https://github.com/tpope/vim-unimpaired
 " Written by Tim Pope <http://tpo.pe/>
 
@@ -686,30 +686,22 @@ if empty(maparg('co', 'n'))
 endif
 
 " Paired Key Mapping
-function! s:MapNextFamily(map, cmd)
-  let map = '<Plug>unimpaired'.toupper(a:map)
-  let end = ' ".(v:count ? v:count : "")<CR>'
-  execute 'nmap <silent> '.map.'Previous :<C-U>exe "'.a:cmd.'previous'.end
-  execute 'nmap <silent> '.map.'Next     :<C-U>exe "'.a:cmd.'next'.end
-  execute 'nmap <silent> '.map.'First    :<C-U>exe "'.a:cmd.'first'.end
-  execute 'nmap <silent> '.map.'Last     :<C-U>exe "'.a:cmd.'last'.end
-  execute 'nmap <silent> ['.        a:map .' '.map.'Previous'
-  execute 'nmap <silent> ]'.        a:map .' '.map.'Next'
-  execute 'nmap <silent> ['.toupper(a:map).' '.map.'First'
-  execute 'nmap <silent> ]'.toupper(a:map).' '.map.'Last'
-endfunction
-
-" files
-call s:MapNextFamily('a', '')
-" buffers
-call s:MapNextFamily('b', 'b')
-" location list
-call s:MapNextFamily('l', 'l')
-" quickfix
-call s:MapNextFamily('q', 'c')
-" tags
-call s:MapNextFamily('t', 't')
-" undo
+" Files
+nmap <silent> [a :<C-U>exe ":".v:count."previous"<CR>
+nmap <silent> ]a :<C-U>exe ":".v:count."next"<CR>
+" Buffers
+nmap <silent> [b :<C-U>exe ":".v:count."bprevious"<CR>
+nmap <silent> ]b :<C-U>exe ":".v:count."bnext"<CR>
+" Location list
+nmap <silent> [l :<C-U>exe ":".v:count."lprevious"<CR>
+nmap <silent> ]l :<C-U>exe ":".v:count."lnext"<CR>
+" Quickfix
+nmap <silent> [q :<C-U>exe ":".v:count."cprevious"<CR>
+nmap <silent> ]q :<C-U>exe ":".v:count."cnext"<CR>
+" Tags
+nmap <silent> [t :<C-U>exe ":".v:count."tprevious"<CR>
+nmap <silent> ]t :<C-U>exe ":".v:count."tnext"<CR>
+" Undo
 nnoremap [u g-
 nnoremap ]u g+
 " }}}
