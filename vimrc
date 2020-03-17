@@ -652,7 +652,7 @@ endfunction
 
 autocmd FileType sh,zsh nnoremap <buffer> <silent> L :call SplitShellLine()<cr>
 
-" Let ,C also close the command-line window
+" Let ,wC also close the command-line window
 autocmd CmdWinEnter * nnoremap <silent><buffer> ,wC <C-c><C-c>
 
 " Unimpaired Mappings {{{
