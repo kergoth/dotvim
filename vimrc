@@ -1054,3 +1054,4 @@ runtime vimrc.$HOSTNAME
 runtime vimrc.local
 exe 'augroup END'
 " }}}
+" vim: set sw=2 sts=2 et:
