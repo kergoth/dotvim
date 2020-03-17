@@ -26,7 +26,7 @@ To instead make this default, run:
 ### Builtin
 
 - `:cq`: Exit non-zero.
-- `g*` Like "*", but don't put "\<" and "\>" around the word. This makes the
+- `g*` Like `*`, but don't put "\<" and "\>" around the word. This makes the
   search also find matches that are not a whole word.
 
 ### .vim/vimrc
