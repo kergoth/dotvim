@@ -1,6 +1,8 @@
 #!/bin/sh
 
-"$(dirname "$0")"/bootstrap
+cd "$(dirname "$0")/.." || exit 1
+
+./script/bootstrap
 
 XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 
