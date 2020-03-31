@@ -2,21 +2,21 @@
 let $MYVIMRC = expand('<sfile>:p')
 let $VIMDOTDIR = fnamemodify($MYVIMRC, ':h')
 
-" Load files from here, not elsewhere
-set runtimepath^=$VIMDOTDIR runtimepath+=$VIMDOTDIR/after
-if has('nvim')
-  set runtimepath-=~/.config/nvim runtimepath-=~/.config/nvim/after
-else
-  set runtimepath-=~/.vim runtimepath-=~/.vim/after
-endif
-
-" Also include $DOTFILESDIR/*/vim/
+" Include $DOTFILESDIR/*/vim/
 if !exists('$DOTFILESDIR')
   let $DOTFILESDIR = '~/.dotfiles'
 endif
 let g:dtvim = glob($DOTFILESDIR . '/*/vim/', 0, 1)
 if !empty(g:dtvim)
   let &runtimepath = join(g:dtvim, ',') . ',' . &runtimepath . ', ' . join(map(g:dtvim, 'v:val . "/after"'), ',')
+endif
+
+" Load files from here, not elsewhere
+set runtimepath^=$VIMDOTDIR runtimepath+=$VIMDOTDIR/after
+if has('nvim')
+  set runtimepath-=~/.config/nvim runtimepath-=~/.config/nvim/after
+else
+  set runtimepath-=~/.vim runtimepath-=~/.vim/after
 endif
 
 " Load packages from our runtimepath
