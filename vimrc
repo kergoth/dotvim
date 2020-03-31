@@ -256,7 +256,6 @@ if has('patch-8.1.0360')
   set diffopt+=internal,algorithm:patience
 endif
 
-
 " Reload vimrc on save
 autocmd BufWritePost $MYVIMRC nested source $MYVIMRC
 
@@ -265,41 +264,6 @@ autocmd BufRead $MYVIMRC setl fdm=marker | if &foldlevel == &foldlevelstart | se
 
 " Resize splits when the window is resized
 autocmd VimResized * exe "normal! \<c-w>="
-
-" Automatically open, but do not go to (if there are errors) the quickfix /
-" location list window, or close it when is has become empty.
-"
-" Note: Must allow nesting of autocmds to enable any customizations for quickfix
-" buffers.
-autocmd QuickFixCmdPost [^l]* nested cwindow
-autocmd QuickFixCmdPost    l* nested lwindow
-
-" Adjust the quickfix window height to avoid unnecessary padding
-function! AdjustWindowHeight(minheight, maxheight)
-  let l = 1
-  let n_lines = 0
-  let w_width = winwidth(0)
-  while l <= line('$')
-    " number to float for division
-    let l_len = strlen(getline(l)) + 0.0
-    let line_width = l_len/w_width
-    let n_lines += float2nr(ceil(line_width))
-    let l += 1
-  endw
-  exe max([min([n_lines, a:maxheight]), a:minheight]) . 'wincmd _'
-endfunction
-autocmd FileType qf call AdjustWindowHeight(3, 10)
-
-" Close out the quickfix window if it's the only open window
-function! s:QuickFixClose()
-  if &buftype ==# 'quickfix'
-    " if this window is last on screen, quit
-    if winnr('$') < 2
-      quit
-    endif
-  endif
-endfunction
-autocmd BufEnter * call <SID>QuickFixClose()
 
 " Close preview window when the completion menu closes
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
@@ -523,41 +487,6 @@ nnoremap ,G :Grep <C-r><C-w>
 
 " Open a file in the same directory as the current file
 nnoremap ,e :e <C-r>=escape(expand('%:p:h'), ' \') . '/<C-d>'<CR>
-
-function! GetBufferList()
-  redir =>buflist
-  silent! ls!
-  redir END
-  return buflist
-endfunction
-
-function! ToggleList(bufname, pfx)
-  let buflist = GetBufferList()
-  for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
-    if bufwinnr(bufnum) != -1
-      exec(a:pfx.'close')
-      return
-    endif
-  endfor
-  if a:pfx ==# 'l' && len(getloclist(0)) == 0
-    echohl ErrorMsg
-    echo a:bufname . ' is Empty.'
-    return
-  elseif a:pfx ==# 'c' && len(getqflist()) == 0
-    echohl ErrorMsg
-    echo a:bufname . ' is Empty.'
-    return
-  endif
-  let winnr = winnr()
-  exec(a:pfx.'open')
-  if winnr() != winnr
-    wincmd p
-  endif
-endfunction
-
-" Toggle loclist and quickfix windows
-nnoremap <silent> ,wl :call ToggleList("Location List", 'l')<CR>
-nnoremap <silent> ,wc :call ToggleList("Quickfix List", 'c')<CR>
 
 " Open a Quickfix window for the last search.
 nnoremap <silent> ,w/ :execute 'vimgrep /'.@/.'/g %'<CR>:copen<CR>
