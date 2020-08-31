@@ -23,7 +23,7 @@ if ! [ -d pack/bundle/opt/minpac ]; then
 fi
 
 if command -v nvim >/dev/null 2>&1; then
-    alias vim="nvim ${bootstrap:+--headless}"
+    alias vim=nvim
 fi
 vim ${bootstrap:+-E} -u vimrc -c PackClean -c PackUpdate${bootstrap:+AndQuit </dev/null | cat}
 echo
