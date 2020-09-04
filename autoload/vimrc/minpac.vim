@@ -1,7 +1,7 @@
 function! vimrc#minpac#packages()
   packadd minpac
 
-  call minpac#init({'package_name': 'bundle'})
+  call minpac#init({'package_name': 'bundle', 'progress_open': 'none'})
   call minpac#add('k-takata/minpac', {'type': 'opt'})
 
   call minpac#add('ajh17/VimCompletesMe')

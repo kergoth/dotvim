@@ -23,7 +23,17 @@ if ! [ -d pack/bundle/opt/minpac ]; then
 fi
 
 if command -v nvim >/dev/null 2>&1; then
-    alias vim=nvim
+    cmd=nvim
+    set -- ${bootstrap:+--headless}
+else
+    cmd=vim
+    set -- ${bootstrap:+-E}
 fi
-vim ${bootstrap:+-E} -u vimrc -c PackUpdate${bootstrap:+AndQuit </dev/null | cat}
+
+if [ "$bootstrap" = "1" ]; then
+    cat /dev/null
+else
+    cat /dev/stdin
+fi \
+    | command "$cmd" "$@" -u vimrc -c PackUpdate${bootstrap:+AndQuit}
 echo
