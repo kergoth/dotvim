@@ -31,9 +31,8 @@ else
 fi
 
 if [ "$bootstrap" = "1" ]; then
-    cat /dev/null
+    command "$cmd" "$@" -u vimrc -c PackUpdateAndQuit </dev/null
+    echo
 else
-    cat /dev/stdin
-fi \
-    | command "$cmd" "$@" -u vimrc -c PackUpdate${bootstrap:+AndQuit}
-echo
+    command "$cmd" "$@" -u vimrc -c PackUpdate
+fi
