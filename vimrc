@@ -863,7 +863,7 @@ autocmd StdinReadPost * :set buftype=nofile
 " }}}
 " File type settings {{{
 " Indentation settings
-autocmd FileType vim setlocal sts=2 sw=2 et
+autocmd FileType vim,markdown setlocal sts=2 sw=2 et
 autocmd FileType gitconfig setlocal sts=0 sw=8 noet
 
 " Comment string
