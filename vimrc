@@ -390,7 +390,7 @@ endif
 
 " Change the current directory to the location of the
 " file being edited.
-command! -nargs=0 -complete=command Bcd lcd %:p:h
+command! -nargs=0 Bcd lcd %:p:h
 " }}}
 " Abbreviations {{{
 iabbrev adn and
