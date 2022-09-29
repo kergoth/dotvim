@@ -115,7 +115,7 @@ if has('viminfo') || has('shada')
   " s   max # of Kb for each register to be saved
   " h   don't restore hlsearch behavior
   set viminfo=!,f1,'1000,:1000,/1000,<1000,s100,h,r/tmp
-  if !exists('&viminfofile')
+  if has('viminfo') && !exists('&viminfofile')
     let &viminfo .= ',n' . s:viminfofile
   endif
 endif
