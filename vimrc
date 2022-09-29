@@ -931,7 +931,10 @@ if !has('nvim')
 endif
 
 if has('nvim') || v:version >= 800
-  packadd! cfilter
+  try
+    packadd! cfilter
+  catch
+  endtry
 endif
 
 " Settings that need to be set before loading the plugin
