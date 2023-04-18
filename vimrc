@@ -762,7 +762,7 @@ if &t_Co > 2 || has('gui_running')
   endif
   if !exists('g:colors_name')
     if &t_Co >= 88
-      colorscheme baycomb
+      colorscheme dracula
     else
       colorscheme desert
     endif
