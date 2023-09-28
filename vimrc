@@ -8,7 +8,7 @@ if !exists('$DOTFILESDIR')
 endif
 let g:dtvim = glob($DOTFILESDIR . '/*/vim/', 0, 1)
 if !empty(g:dtvim)
-  let &runtimepath = join(g:dtvim, ',') . ',' . &runtimepath . ', ' . join(map(g:dtvim, 'v:val . "/after"'), ',')
+  let &runtimepath = join(g:dtvim, ',') . ',' . &runtimepath . ',' . join(map(g:dtvim, 'v:val . "/after"'), ',')
 endif
 
 " Load files from here, not elsewhere
