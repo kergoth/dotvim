@@ -746,44 +746,6 @@ if has('gui_running') || &title
   set titlestring+=%{vimrc#statusline#Readonly()}
 endif
 
-" Setup color scheme
-function! s:OverrideColors() abort
-  hi! link Error NONE
-  hi! Error ctermbg=darkred guibg=darkred ctermfg=black guifg=black
-endfunction
-
-autocmd ColorScheme * :call s:OverrideColors()
-
-" Default colorscheme for fallback
-if &t_Co > 2 || has('gui_running')
-  " Allow color schemes to do bright colors without forcing bold.
-  if &t_Co == 8 && $TERM !~# '^Eterm'
-    set t_Co=16
-  endif
-  if !exists('g:colors_name')
-    if &t_Co >= 88
-      colorscheme dracula
-    else
-      colorscheme desert
-    endif
-  endif
-endif
-
-" Assume we have a decent terminal, as vim only recognizes a very small set of
-" $TERM values for the default enable.
-set ttyfast
-
-" Avoid unnecessary redraws
-set lazyredraw
-
-if !has('nvim') && has('mouse_xterm')
-  " Assume we're using a terminal that can handle this, as vim's automatic
-  " enable only recognizes a limited set of $TERM values
-  if !&ttymouse
-    set ttymouse=xterm2
-  endif
-endif
-
 try
   set balloonevalterm
 catch
@@ -835,6 +797,44 @@ let &t_RT = "\e[23;2t"
 " using a color theme with a background color in terminals such as
 " kitty that do not support background color erase.
 let &t_ut=''
+
+" Setup color scheme
+function! s:OverrideColors() abort
+  hi! link Error NONE
+  hi! Error ctermbg=darkred guibg=darkred ctermfg=black guifg=black
+endfunction
+
+autocmd ColorScheme * :call s:OverrideColors()
+
+" Default colorscheme for fallback
+if &t_Co > 2 || has('gui_running')
+  " Allow color schemes to do bright colors without forcing bold.
+  if &t_Co == 8 && $TERM !~# '^Eterm'
+    set t_Co=16
+  endif
+  if !exists('g:colors_name')
+    if &t_Co >= 88
+      colorscheme dracula
+    else
+      colorscheme desert
+    endif
+  endif
+endif
+
+" Assume we have a decent terminal, as vim only recognizes a very small set of
+" $TERM values for the default enable.
+set ttyfast
+
+" Avoid unnecessary redraws
+set lazyredraw
+
+if !has('nvim') && has('mouse_xterm')
+  " Assume we're using a terminal that can handle this, as vim's automatic
+  " enable only recognizes a limited set of $TERM values
+  if !&ttymouse
+    set ttymouse=xterm2
+  endif
+endif
 
 " Folding text function from Gregory Pakosz, with l:end removed
 function! FoldText()
