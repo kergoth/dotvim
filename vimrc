@@ -813,7 +813,7 @@ if &t_Co > 2 || has('gui_running')
     set t_Co=16
   endif
   if !exists('g:colors_name')
-    if &t_Co >= 88
+    if &t_Co >= 88 && index(v:argv, 'PackUpdateAndQuit') == -1
       colorscheme dracula
     else
       colorscheme desert
