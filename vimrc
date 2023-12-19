@@ -32,23 +32,26 @@ endif
 
 " Use XDG paths
 if !has('nvim')
+  if empty($XDG_STATE_HOME)
+    let $XDG_STATE_HOME = $HOME . '/.local/state'
+  endif
   if empty($XDG_DATA_HOME)
     let $XDG_DATA_HOME = $HOME . '/.local/share'
   endif
 
-  set directory=$XDG_DATA_HOME/vim/swap//
-  set backupdir=$XDG_DATA_HOME/vim/backup
+  set directory=$XDG_STATE_HOME/vim/swap//
+  set backupdir=$XDG_STATE_HOME/vim/backup
   if has('persistent_undo')
-    set undodir=$XDG_DATA_HOME/vim/undo
+    set undodir=$XDG_STATE_HOME/vim/undo
   endif
-  set viewdir=$XDG_DATA_HOME/vim/view
+  set viewdir=$XDG_STATE_HOME/vim/view
   let g:netrw_home = $XDG_DATA_HOME . '/vim'
 
   if has('viminfo')
     if exists('&viminfofile')
-      set viminfofile=$XDG_DATA_HOME/vim/viminfo
+      set viminfofile=$XDG_STATE_HOME/vim/viminfo
     else
-      let s:viminfofile = $XDG_DATA_HOME . '/vim/viminfo'
+      let s:viminfofile = $XDG_STATE_HOME . '/vim/viminfo'
     endif
   endif
 else
