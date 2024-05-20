@@ -256,7 +256,10 @@ set diffopt+=iwhite
 
 " Prefer the patience algorithm
 if has('patch-8.1.0360')
-  set diffopt+=internal,algorithm:patience
+  try
+    set diffopt+=internal,algorithm:patience
+  catch
+  endtry
 endif
 
 " Reload vimrc on save
