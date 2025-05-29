@@ -467,8 +467,11 @@ if &term =~# '^screen'
   execute "set <xLeft>=\e[1;*D"
 endif
 
-" Toggle paste mode with ,P
-set pastetoggle=,P
+try
+  " Toggle paste mode with ,P
+  set pastetoggle=,P
+catch
+endtry
 
 " Clear search, refresh diff, sync syntax, redraw the screen
 nnoremap <silent> ,U :nohlsearch<cr>:diffupdate<cr>:syntax sync fromstart<cr>:redraw!<cr>
