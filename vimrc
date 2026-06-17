@@ -815,15 +815,25 @@ endfunction
 
 autocmd ColorScheme * :call s:OverrideColors()
 
+let g:dracula_italic = 0
+
 " Default colorscheme for fallback
 if &t_Co > 2 || has('gui_running')
   " Allow color schemes to do bright colors without forcing bold.
   if &t_Co == 8 && $TERM !~# '^Eterm'
     set t_Co=16
   endif
+  let s:clitheme = get(environ(), 'CLITHEME', 'auto')
+  if s:clitheme ==# 'dark' || s:clitheme ==# 'light'
+    let &background = s:clitheme
+  endif
   if !exists('g:colors_name')
     if &t_Co >= 88 && index(v:argv, 'PackUpdateAndQuit') == -1
-      colorscheme dracula
+      if &background ==# 'light'
+        colorscheme alabaster-bg
+      else
+        colorscheme dracula
+      endif
     else
       colorscheme desert
     endif
