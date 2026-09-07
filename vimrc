@@ -772,8 +772,8 @@ let &t_Ce = "\e[4:0m"
 let &t_Ts = "\e[9m"
 let &t_Te = "\e[29m"
 " Truecolor support
-let &t_8f = "\e[38:2:%lu:%lu:%lum"
-let &t_8b = "\e[48:2:%lu:%lu:%lum"
+let &t_8f = "\e[38;2;%lu;%lu;%lum"
+let &t_8b = "\e[48;2;%lu;%lu;%lum"
 let &t_RF = "\e]10;?\e\\"
 let &t_RB = "\e]11;?\e\\"
 " Bracketed paste
