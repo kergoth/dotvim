@@ -817,6 +817,25 @@ autocmd ColorScheme * :call s:OverrideColors()
 
 let g:dracula_italic = 0
 
+function! s:LoadColorScheme() abort
+  if exists('g:colors_name')
+    return
+  endif
+  if &t_Co >= 88 && index(v:argv, 'PackUpdateAndQuit') == -1
+    if &background ==# 'light'
+      colorscheme alabaster-bg
+    else
+      colorscheme dracula
+    endif
+  else
+    colorscheme desert
+  endif
+endfunction
+
+function! s:LoadColorSchemeFallback(timer) abort
+  call s:LoadColorScheme()
+endfunction
+
 " Default colorscheme for fallback
 if &t_Co > 2 || has('gui_running')
   " Allow color schemes to do bright colors without forcing bold.
@@ -825,18 +844,24 @@ if &t_Co > 2 || has('gui_running')
   endif
   let s:clitheme = get(environ(), 'CLITHEME', 'auto')
   if s:clitheme ==# 'dark' || s:clitheme ==# 'light'
+    " Use an explicitly specified background color
     let &background = s:clitheme
-  endif
-  if !exists('g:colors_name')
-    if &t_Co >= 88 && index(v:argv, 'PackUpdateAndQuit') == -1
-      if &background ==# 'light'
-        colorscheme alabaster-bg
-      else
-        colorscheme dracula
-      endif
+    call s:LoadColorScheme()
+  elseif !has('nvim') && !has('gui_running') && exists('##TermResponseAll')
+    " Wait for OSC 11 terminal background color response
+    augroup vimrc_terminal_background
+      autocmd!
+      autocmd TermResponseAll * if expand('<amatch>') ==# 'background' | call s:LoadColorScheme() | endif
+    augroup END
+    if exists('*timer_start')
+      " Add fallback if OSC 11 response does not arrive
+      call timer_start(100, function('s:LoadColorSchemeFallback'))
     else
-      colorscheme desert
+      call s:LoadColorScheme()
     endif
+  else
+    " Nvim or GUI, set it immediately
+    call s:LoadColorScheme()
   endif
 endif
 
